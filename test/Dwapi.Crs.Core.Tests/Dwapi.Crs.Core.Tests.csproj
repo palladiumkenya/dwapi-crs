@@ -35,4 +35,10 @@
       <ProjectReference Include="..\Dwapi.Crs.SharedKernel.Tests\Dwapi.Crs.SharedKernel.Tests.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
