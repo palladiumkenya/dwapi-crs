@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dwapi.Crs.Core.Domain;
 using Dwapi.Crs.Core.Interfaces.Repository;
 using Dwapi.Crs.Infrastructure.Data;
@@ -30,7 +31,7 @@ namespace Dwapi.Crs.Infrastructure.Tests.Data.Repository
             var connectionString = config["ConnectionStrings:DwapiConnection"];
 
             _serviceProvider = new ServiceCollection()
-                .AddDbContext<CrsContext>(o => o.UseSqlServer(connectionString))
+                .AddDbContext<CrsContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
                 .AddTransient<IFacilityRepository, FacilityRepository>()
                 .AddTransient<IManifestRepository, ManifestRepository>()
                 .BuildServiceProvider();

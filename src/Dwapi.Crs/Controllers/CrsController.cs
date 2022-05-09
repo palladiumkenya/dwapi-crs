@@ -84,5 +84,25 @@ namespace Dwapi.Crs.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        
+        [HttpGet("Status")]
+        public IActionResult GetStatus()
+        {
+            try
+            {
+                var ver = GetType().Assembly.GetName().Version;
+                return Ok(new
+                {
+                    name = "Dwapi Central - API (CRS)",
+                    status = "running",
+                    build = "09MAY221650"
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "status error");
+                return StatusCode(500, e.Message);
+            }
+        }
     }
 }
