@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Dwapi.Crs.SharedKernel.Enums;
 using Dwapi.Crs.SharedKernel.Model;
 
@@ -25,6 +26,8 @@ namespace Dwapi.Crs.Core.Domain
         public DateTime? End { get; set; }
         public string Tag { get; set; }
         public ICollection<Cargo> Cargoes { get; set; } = new List<Cargo>();
+        
+       
 
         public Manifest()
         {
