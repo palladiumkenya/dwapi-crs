@@ -41,5 +41,6 @@ namespace Dwapi.Crs.Contracts.Crs
     DateTime? NextAppointmentDate { get; set;}
     DateTime? Date_Created { get; set; }
     DateTime? Date_Last_Modified { get; set; }
+    int? SatelliteId { get; set; }
   }
 }
