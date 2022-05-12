@@ -42,5 +42,6 @@ namespace Dwapi.Crs.Contracts.Crs
     DateTime? Date_Created { get; set; }
     DateTime? Date_Last_Modified { get; set; }
     int? SatelliteId { get; set; }
+    string CurrentOnART { get; set;}
   }
 }

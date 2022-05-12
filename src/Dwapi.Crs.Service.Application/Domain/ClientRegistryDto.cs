@@ -1,29 +1,10 @@
-﻿using System;
+using System;
 using Dwapi.Crs.Contracts.Crs;
-using Dwapi.Crs.SharedKernel.Model;
 
-namespace Dwapi.Crs.Core.Domain
+namespace Dwapi.Crs.Service.Application.Domain
 {
-    public class ClientRegistry : Entity<Guid>,IExtract,IClientRegistry
+    public class ClientRegistryDto:IClientRegistry
     {
-     
-
-        public override void UpdateRefId()
-        {
-            RefId = Id;
-            Id = Guid.NewGuid();
-        }
-
-        public int PatientPk { get; set; }
-        public int SiteCode { get; set; }
-        public string Emr { get; set; }
-        public string Project { get; set; }
-        public bool? Processed { get; set; }
-        public string QueueId { get; set; }
-        public string Status { get; set; }
-        public DateTime? StatusDate { get; set; }
-        public DateTime? DateExtracted { get; set; }
-        public Guid FacilityId { get; set; }
         public string CCCNumber { get; set; }
         public string NationalId { get; set; }
         public string Passport { get; set; }
