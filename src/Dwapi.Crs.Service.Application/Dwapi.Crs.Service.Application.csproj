@@ -5,9 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+  
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.25" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Dwapi.Contracts\Dwapi.Contracts.csproj" />
     <ProjectReference Include="..\Dwapi.Crs.Core\Dwapi.Crs.Core.csproj" />
     <ProjectReference Include="..\Dwapi.Crs.SharedKernel\Dwapi.Crs.SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Events" />
   </ItemGroup>
 
 </Project>

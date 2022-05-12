@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Dwapi.Crs.Service.Infrastructure.Migrations
 {
-    public partial class CrsService : Migration
+    public partial class CrsServiceInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,8 +15,10 @@ namespace Dwapi.Crs.Service.Infrastructure.Migrations
                     RefId = table.Column<Guid>(nullable: true),
                     Created = table.Column<DateTime>(nullable: true),
                     ManifestId = table.Column<Guid>(nullable: false),
+                    FacilityId = table.Column<Guid>(nullable: false),
                     SiteCode = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Records = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {

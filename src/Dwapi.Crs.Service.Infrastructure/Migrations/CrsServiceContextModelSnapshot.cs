@@ -28,11 +28,17 @@ namespace Dwapi.Crs.Service.Infrastructure.Migrations
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("FacilityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ManifestId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("Records")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid?>("RefId")
                         .HasColumnType("uniqueidentifier");

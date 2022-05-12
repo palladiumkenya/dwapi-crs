@@ -6,6 +6,7 @@ namespace Dwapi.Crs.Service.Application.Interfaces
 {
     public interface ICrsDumpService
     {
+        Task<ApiResponse> Dump(ClientRegistryDto clientRegistryDto);
         Task<ApiResponse> Dump(IEnumerable<ClientRegistryDto> clientRegistryDtos);
         Task<ApiResponse> Read(string resource);
     }

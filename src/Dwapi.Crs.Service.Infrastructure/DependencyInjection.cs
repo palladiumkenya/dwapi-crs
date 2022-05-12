@@ -21,7 +21,8 @@ namespace Dwapi.Crs.Service.Infrastructure
                 configuration.GetValue<string>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Url)}"),
                 configuration.GetValue<bool>($"{nameof(CrsSettings)}:{nameof(CrsSettings.CertificateValidation)}"),
                 configuration.GetValue<string>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Client)}"),
-                configuration.GetValue<string>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Secret)}")
+                configuration.GetValue<string>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Secret)}"),
+                configuration.GetValue<int>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Batches)}")
             );
 
             var options = new RestClientOptions(crsSettings.Url)
@@ -42,6 +43,7 @@ namespace Dwapi.Crs.Service.Infrastructure
             services.AddScoped<ICrsDumpService, CrsDumpService>();
             
             services.AddScoped<IRegistryManifestRepository, RegistryManifestRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
 
             return services;
         }

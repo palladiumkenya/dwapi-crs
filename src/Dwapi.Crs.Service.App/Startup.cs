@@ -31,6 +31,8 @@ namespace Dwapi.Crs.Service.App
         {
             services.AddControllersWithViews();
             services.AddInfrastructure(Configuration);
+            services.AddApplication();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,21 +86,21 @@ namespace Dwapi.Crs.Service.App
          
 
 
-            #region HangFire
-            try
-            {
-                app.UseHangfireDashboard();
-
-                var options = new BackgroundJobServerOptions {ServerName  = "DWAPICRSAPP",WorkerCount = 1 };
-                app.UseHangfireServer(options);
-                GlobalJobFilters.Filters.Add(new ProlongExpirationTimeAttribute());
-                GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute() { Attempts = 3 });
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "Hangfire is down !");
-            }
-            #endregion
+            // #region HangFire
+            // try
+            // {
+            //     app.UseHangfireDashboard();
+            //
+            //     var options = new BackgroundJobServerOptions {ServerName  = "DWAPICRSAPP",WorkerCount = 1 };
+            //     app.UseHangfireServer(options);
+            //     GlobalJobFilters.Filters.Add(new ProlongExpirationTimeAttribute());
+            //     GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute() { Attempts = 3 });
+            // }
+            // catch (Exception e)
+            // {
+            //     Log.Fatal(e, "Hangfire is down !");
+            // }
+            // #endregion
 
             try
             {

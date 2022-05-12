@@ -66,5 +66,39 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
                 throw;
             }
         }
+
+        public async Task<bool> Process()
+        {
+            try
+            {
+                var manis = _context.RegistryManifests
+                    .Where(x => !x.Records.HasValue)
+                    .ToList();
+               
+                foreach (var mani in manis)
+                {
+                    var count = _context.ClientRegistries.LongCount(x => x.FacilityId == mani.FacilityId);
+                    mani.UpdateRecords(count);
+                    _context.Update(mani);
+                 await   _context.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Generate error", e);
+                throw;
+            }
+        }
+
+
+        public Task<List<RegistryManifest>> GetReadyForSending()
+        {
+            var list= _context.RegistryManifests.ToList()
+                .Where(x => x.CanBeSent)
+                .ToList();
+            
+            return Task.FromResult(list);
+        }
     }
 }

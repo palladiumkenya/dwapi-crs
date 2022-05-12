@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dwapi.Crs.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(CrsServiceContext))]
-    [Migration("20220512170712_CrsService")]
-    partial class CrsService
+    [Migration("20220512212026_CrsServiceInitial")]
+    partial class CrsServiceInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,11 +30,17 @@ namespace Dwapi.Crs.Service.Infrastructure.Migrations
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("FacilityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("ManifestId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("Records")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid?>("RefId")
                         .HasColumnType("uniqueidentifier");

@@ -32,6 +32,14 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             return request;
         }
 
+        private RestRequest CreatePostRequest<T>(string resource ,T toPost) where T :class
+        {
+            var request = new RestRequest(resource,Method.Post);
+            request.AddHeader("Authorization", $"Token {_crsSettings.Secret}");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json; charset=utf-8", toPost, ParameterType.RequestBody);
+            return request;
+        }
         private RestRequest CreatePostRequest<T>(string resource ,List<T> toPost) where T :class
         {
             var request = new RestRequest(resource,Method.Post);
@@ -40,6 +48,22 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             request.AddParameter("application/json; charset=utf-8", toPost, ParameterType.RequestBody);
             return request;
         }
+
+        public async Task<ApiResponse> Dump(ClientRegistryDto clientRegistryDto)
+        {
+            try
+            {
+                var req = CreatePostRequest("api/client/", clientRegistryDto);
+                var res= await _client.ExecuteAsync(req);
+                return new ApiResponse(res.StatusCode, res.Content);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Dump error", e);
+                throw;
+            }
+        }
+
         public async Task<ApiResponse> Dump(IEnumerable<ClientRegistryDto> clientRegistryDtos)
         {
             try

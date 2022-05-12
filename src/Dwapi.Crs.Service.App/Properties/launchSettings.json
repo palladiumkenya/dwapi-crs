@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "Dwapi.Crs": {
+    "Dwapi.Crs.Service.App": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

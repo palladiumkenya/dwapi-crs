@@ -28,5 +28,19 @@ namespace Dwapi.Crs.Service.Infrastructure.Tests.Persistence.Repositories
             var res = _manifestRepository.Generate().Result;
             Assert.True(res);
         }
+        
+        [Test]
+        public void should_Process()
+        {
+            var res = _manifestRepository.Process().Result;
+            Assert.True(res);
+        }
+        
+        [Test]
+        public void should_Get_Ready_Upload()
+        {
+            var manifests = _manifestRepository.GetReadyForSending().Result;
+            Assert.True(manifests.Any());
+        }
     }
 }
