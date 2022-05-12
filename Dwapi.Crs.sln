@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwapi.Crs.Service.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwapi.Crs.Service.Infrastructure.Tests", "test\Dwapi.Crs.Service.Infrastructure.Tests\Dwapi.Crs.Service.Infrastructure.Tests.csproj", "{93E86403-9674-4A1A-A9DB-50E24488274E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwapi.Crs.Service.App", "src\Dwapi.Crs.Service.App\Dwapi.Crs.Service.App.csproj", "{31AAE89A-A732-40A7-88B1-ADA369B5C4FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +114,10 @@ Global
 		{93E86403-9674-4A1A-A9DB-50E24488274E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93E86403-9674-4A1A-A9DB-50E24488274E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93E86403-9674-4A1A-A9DB-50E24488274E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31AAE89A-A732-40A7-88B1-ADA369B5C4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31AAE89A-A732-40A7-88B1-ADA369B5C4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31AAE89A-A732-40A7-88B1-ADA369B5C4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31AAE89A-A732-40A7-88B1-ADA369B5C4FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E2C0748E-BF0E-441C-909E-7229E9EE5D63} = {E03BD300-6D34-43F7-9AE1-EB0B5AE313B8}
@@ -137,5 +143,6 @@ Global
 		{B31CECA4-0A7D-4D25-923F-05629D8AA114} = {C518774A-2287-499B-BE6B-DFFC83899137}
 		{578339DA-AAC1-4FB8-BA96-2615B1CCFBCB} = {B31CECA4-0A7D-4D25-923F-05629D8AA114}
 		{93E86403-9674-4A1A-A9DB-50E24488274E} = {B31CECA4-0A7D-4D25-923F-05629D8AA114}
+		{31AAE89A-A732-40A7-88B1-ADA369B5C4FB} = {1CE7500D-8D5B-49D3-9BAC-7A2D45D3568B}
 	EndGlobalSection
 EndGlobal

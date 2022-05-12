@@ -1,7 +1,9 @@
 using System;
 using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Interfaces;
+using Dwapi.Crs.Service.Infrastructure.Repositories;
 using Dwapi.Crs.Service.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
@@ -26,13 +28,20 @@ namespace Dwapi.Crs.Service.Infrastructure
             {
                 FollowRedirects = false
             };
-           
+
             if (!crsSettings.CertificateValidation)
                 options.RemoteCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+
+            services.AddDbContext<CrsServiceContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DwapiConnection"),
+                    b => b.MigrationsAssembly(typeof(CrsServiceContext).Assembly.FullName)));
 
             services.AddSingleton<CrsSettings>(crsSettings);
             services.AddSingleton(new RestClient(options));
             services.AddScoped<ICrsDumpService, CrsDumpService>();
+            
+            services.AddScoped<IRegistryManifestRepository, RegistryManifestRepository>();
 
             return services;
         }

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dwapi.Contracts\Dwapi.Contracts.csproj" />
+    <ProjectReference Include="..\Dwapi.Crs.Core\Dwapi.Crs.Core.csproj" />
     <ProjectReference Include="..\Dwapi.Crs.SharedKernel\Dwapi.Crs.SharedKernel.csproj" />
   </ItemGroup>
 

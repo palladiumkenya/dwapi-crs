@@ -14,9 +14,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.25" />
     <PackageReference Include="RestSharp" Version="107.3.0" />
     <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="Z.Dapper.Plus" Version="1.4.10" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dwapi.Crs.Core\Dwapi.Crs.Core.csproj" />
     <ProjectReference Include="..\Dwapi.Crs.Service.Application\Dwapi.Crs.Service.Application.csproj" />
     <ProjectReference Include="..\Dwapi.Crs.SharedKernel.Infrastructure\Dwapi.Crs.SharedKernel.Infrastructure.csproj" />
   </ItemGroup>

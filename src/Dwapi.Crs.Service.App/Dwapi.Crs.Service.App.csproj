@@ -2,6 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+        <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+        <IsPackable>false</IsPackable>
+        <AssemblyName>Dwapi.Crs.Service.App</AssemblyName>
+        <RootNamespace>Dwapi.Crs.Service.App</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,12 +24,12 @@
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.25">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.25" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.25" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
         <PackageReference Include="Serilog" Version="2.11.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
@@ -33,20 +38,11 @@
         <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="2.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
         <PackageReference Include="Z.Dapper.Plus" Version="3.0.14" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.23" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Hangfire.Pro, Version=2.2.2.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\..\libs\Hangfire.Pro.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Dwapi.Crs.Infrastructure\Dwapi.Crs.Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="logs" />
+      <ProjectReference Include="..\Dwapi.Crs.Service.Infrastructure\Dwapi.Crs.Service.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
