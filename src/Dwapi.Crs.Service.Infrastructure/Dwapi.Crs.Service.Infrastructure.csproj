@@ -15,10 +15,6 @@
     <PackageReference Include="RestSharp" Version="107.3.0" />
     <PackageReference Include="Serilog" Version="2.11.0" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Persistence" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Dwapi.Crs.Service.Application\Dwapi.Crs.Service.Application.csproj" />

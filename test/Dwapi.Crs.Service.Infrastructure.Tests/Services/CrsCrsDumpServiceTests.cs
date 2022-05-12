@@ -1,3 +1,4 @@
+using System.Net;
 using Dwapi.Crs.Service.Application.Interfaces;
 using Dwapi.Crs.Service.Infrastructure.Tests.TestData;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +8,7 @@ using Serilog;
 namespace Dwapi.Crs.Service.Infrastructure.Tests.Services
 {
     [TestFixture]
-    public class CrsCrsDumpServiceTests
+    public class gCrsCrsDumpServiceTests
     {
         private ICrsDumpService _crsDumpService;
 
@@ -22,13 +23,17 @@ namespace Dwapi.Crs.Service.Infrastructure.Tests.Services
         {
             var data = RegistryTestData.GetData();
             var res = _crsDumpService.Dump(data).Result;
-            Assert.NotNull(res);
+            Assert.AreEqual(HttpStatusCode.OK,res.StatusCode);
+            Assert.False(string.IsNullOrWhiteSpace(res.Response));
+            Log.Debug(res.Response);
         }
         [Test]
         public void should_Read()
         {
-            var res = _crsDumpService.Read("https://nascopdumptestapi.health.go.ke/api/client/662761d3-a63a-42b1-a98d-9ad3122252e6").Result;
-            Assert.NotNull(res);
+            var res = _crsDumpService.Read("api/client/662761d3-a63a-42b1-a98d-9ad3122252e6/").Result;
+            Assert.AreEqual(HttpStatusCode.OK,res.StatusCode);
+            Assert.False(string.IsNullOrWhiteSpace(res.Response));
+            Log.Debug(res.Response);
         }
     }
 }
