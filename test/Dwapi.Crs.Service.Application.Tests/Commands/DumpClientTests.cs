@@ -20,7 +20,7 @@ namespace Dwapi.Crs.Service.Application.Tests.Commands
         [Test]
         public void should_Dump_Client()
         {
-            var res = _mediator.Send(new DumpClients()).Result;
+            var res = _mediator.Send(new DumpClient()).Result;
             Assert.True(res.IsSuccess);
         }
     }

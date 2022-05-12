@@ -37,7 +37,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             var request = new RestRequest(resource,Method.Post);
             request.AddHeader("Authorization", $"Token {_crsSettings.Secret}");
             request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("application/json; charset=utf-8", toPost, ParameterType.RequestBody);
+            request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(toPost), ParameterType.RequestBody);
             return request;
         }
         private RestRequest CreatePostRequest<T>(string resource ,List<T> toPost) where T :class
@@ -45,7 +45,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             var request = new RestRequest(resource,Method.Post);
             request.AddHeader("Authorization", $"Token {_crsSettings.Secret}");
             request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("application/json; charset=utf-8", toPost, ParameterType.RequestBody);
+            request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(toPost), ParameterType.RequestBody);
             return request;
         }
 
@@ -54,6 +54,8 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             try
             {
                 var req = CreatePostRequest("api/client/", clientRegistryDto);
+                // var json = req.Parameters.FirstOrDefault(x => x.Type == ParameterType.RequestBody);
+                // Log.Debug(json.Value.ToString());
                 var res= await _client.ExecuteAsync(req);
                 return new ApiResponse(res.StatusCode, res.Content);
             }
@@ -69,6 +71,8 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             try
             {
                 var req = CreatePostRequest("api/client/", clientRegistryDtos.ToList());
+                // var json = req.Parameters.FirstOrDefault(x => x.Type == ParameterType.RequestBody);
+                // Log.Debug(json.Value.ToString());
                 var res= await _client.ExecuteAsync(req);
                 return new ApiResponse(res.StatusCode, res.Content);
             }
