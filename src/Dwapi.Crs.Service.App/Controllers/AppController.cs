@@ -57,11 +57,11 @@ namespace Dwapi.Crs.Service.App.Controllers
         
         
         [HttpPost("DumpSingle")]
-        public async Task<IActionResult> DumpSingle([FromBody] ManifestExtractDto manifestDto)
+        public async Task<IActionResult> DumpSingle([FromBody] SiteDto siteDto)
         {
             try
             {
-                _mediator.Send(new DumpClient());
+                _mediator.Send(new DumpClient(siteDto.SiteCodes));
                 return Ok();
             }
             catch (Exception e)

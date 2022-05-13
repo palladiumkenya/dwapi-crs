@@ -42,5 +42,12 @@ namespace Dwapi.Crs.Service.Infrastructure.Tests.Persistence.Repositories
             var manifests = _manifestRepository.GetReadyForSending().Result;
             Assert.True(manifests.Any());
         }
+        
+        [Test]
+        public void should_Get_Ready_Upload_Sites()
+        {
+            var manifests = _manifestRepository.GetReadyForSending(new []{13075}).Result;
+            Assert.True(manifests.Any());
+        }
     }
 }

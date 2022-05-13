@@ -13,10 +13,16 @@ using Serilog;
 
 namespace Dwapi.Crs.Service.Application.Commands
 {
-   public class DumpClient:IRequest<Result>
+    public class DumpClient : IRequest<Result>
     {
-        
+        public int[] SiteCodes { get; }
+
+        public DumpClient(int[] siteCodes)
+        {
+            SiteCodes = siteCodes;
+        }
     }
+
     public class DumpClientHandler:IRequestHandler<DumpClient,Result>
     {
         private readonly CrsSettings _crsSettings;
@@ -37,7 +43,7 @@ namespace Dwapi.Crs.Service.Application.Commands
         public async Task<Result> Handle(DumpClient request, CancellationToken cancellationToken)
         {
             Log.Debug("checking for available manifests");
-            var manis =await  _manifestRepository.GetReadyForSending();
+            var manis =await  _manifestRepository.GetReadyForSending(request.SiteCodes);
             if (manis.Any())
             {
                 Log.Debug($"{manis.Count} Manifests Available");
@@ -51,14 +57,15 @@ namespace Dwapi.Crs.Service.Application.Commands
                         Log.Debug($"sending {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
                         var dtos = _mapper.Map<List<ClientRegistryDto>>(clients);
-                        foreach (var clientRegistryDto in dtos)
+                        dtos.ForEach(x =>
                         {
-                            var res=await _crsDumpService.Dump(clientRegistryDto);
-                            Log.Debug(new string('-',50));
-                            Log.Debug(res.Response);
-                            Log.Debug(new string('^',50));
-                            
-                        }
+                            x.Sex = "Male";
+                            x.MaritalStatus = "Single";
+                        });
+                        var res = await _crsDumpService.Dump(dtos.Take(1).First());
+                        Log.Debug(new string('-', 50));
+                        Log.Debug(res.Response);
+                        Log.Debug(new string('^', 50));
                         Log.Debug($"SENT {mani.Name} [{pageNumber} of {pageCount}]");
                     }
                 }

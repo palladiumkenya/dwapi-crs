@@ -10,6 +10,6 @@ namespace Dwapi.Crs.Service.Application.Interfaces
         Task<List<Manifest>> GetFirstTimers();
         Task<bool> Generate();
         Task<bool> Process();
-        Task<List<RegistryManifest>> GetReadyForSending();
+        Task<List<RegistryManifest>> GetReadyForSending(int [] siteCode=null);
     }
 }

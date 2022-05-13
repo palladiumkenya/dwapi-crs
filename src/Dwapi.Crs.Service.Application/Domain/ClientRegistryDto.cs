@@ -35,8 +35,9 @@ namespace Dwapi.Crs.Service.Application.Domain
         [JsonProperty("marital_status")]
         public string MaritalStatus { get; set; }
         [JsonProperty("occupation")]
+        [JsonIgnore]
         public string Occupation { get; set; }
-        [JsonProperty("education_level")]
+        [JsonIgnore]
         public string HighestLevelOfEducation { get; set; }
         [JsonProperty("phone_number")]
         public string PhoneNumber { get; set; }
@@ -46,7 +47,9 @@ namespace Dwapi.Crs.Service.Application.Domain
         public string SpousePhoneNumber { get; set; }
         [JsonProperty("next_of_kin_name")]
         public string NameOfNextOfKin { get; set; }
+        
         [JsonProperty("next_of_kin_relationship")]
+        [JsonIgnore]
         public string NextOfKinRelationship { get; set; }
         [JsonProperty("next_of_kin_phone_number")]
         public string NextOfKinTelNo { get; set; }
@@ -69,6 +72,7 @@ namespace Dwapi.Crs.Service.Application.Domain
         [JsonProperty("date_of_initiation")]
         public DateTime? DateOfInitiation { get; set; }
         [JsonProperty("treatment_outcome")]
+        [JsonIgnore]
         public string TreatmentOutcome { get; set; }
         [JsonProperty("date_of_last_encounter")]
         public DateTime? DateOfLastEncounter { get; set; }

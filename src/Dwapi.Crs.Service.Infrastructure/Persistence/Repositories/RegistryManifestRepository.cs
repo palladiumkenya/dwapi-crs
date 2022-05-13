@@ -92,13 +92,21 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
         }
 
 
-        public Task<List<RegistryManifest>> GetReadyForSending()
+        public Task<List<RegistryManifest>> GetReadyForSending(int [] siteCode=null)
         {
-            var list= _context.RegistryManifests.ToList()
+            if (null != siteCode)
+            {
+                var list = _context.RegistryManifests.ToList()
+                    .Where(x => x.CanBeSent && siteCode.Contains(x.SiteCode))
+                    .ToList();
+                return Task.FromResult(list);
+            }
+
+            var ls = _context.RegistryManifests.ToList()
                 .Where(x => x.CanBeSent)
                 .ToList();
-            
-            return Task.FromResult(list);
+                
+            return Task.FromResult(ls);
         }
     }
 }
