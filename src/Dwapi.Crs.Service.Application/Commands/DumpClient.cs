@@ -62,7 +62,7 @@ namespace Dwapi.Crs.Service.Application.Commands
                             x.Sex = "Male";
                             x.MaritalStatus = "Single";
                         });
-                        var res = await _crsDumpService.Dump(dtos.Take(1).First());
+                        var res = await _crsDumpService.Dump(dtos);
                         Log.Debug(new string('-', 50));
                         Log.Debug(res.Response);
                         Log.Debug(new string('^', 50));

@@ -43,7 +43,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
         {
             var request = new RestRequest(resource,Method.Post);
             request.AddHeader("Authorization", $"Token {_crsSettings.Secret}");
-            request.AddJsonBody(GenertateBody(toPost));
+            request.AddJsonBody(GenertateListBody(toPost));
             return request;
         }
 
@@ -51,6 +51,12 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
         {
             var json=JsonConvert.SerializeObject(data);
             return JsonConvert.DeserializeObject<Root>(json);
+        }
+        
+        private object GenertateListBody(object data)
+        {
+            var json=JsonConvert.SerializeObject(data);
+            return JsonConvert.DeserializeObject<List<Root>>(json);
         }
 
         public async Task<ApiResponse> Dump(ClientRegistryDto clientRegistryDto)

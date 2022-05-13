@@ -23,7 +23,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
 
         [HttpPost("Generate")]
-        public async Task<IActionResult> Generate([FromBody] ManifestExtractDto manifestDto)
+        public async Task<IActionResult> Generate([FromBody] SiteDto manifestDto)
         { 
             try
             {
@@ -38,7 +38,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
         
         [HttpPost("DumpAll")]
-        public async Task<IActionResult> Dump([FromBody] ManifestExtractDto manifestDto)
+        public async Task<IActionResult> Dump([FromBody] SiteDto manifestDto)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         {
             try
             {
-                _mediator.Send(new DumpClient(siteDto.SiteCodes));
+                await  _mediator.Send(new DumpClient(siteDto.SiteCodes));
                 return Ok();
             }
             catch (Exception e)
