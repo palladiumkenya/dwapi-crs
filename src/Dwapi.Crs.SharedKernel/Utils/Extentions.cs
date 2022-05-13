@@ -35,8 +35,8 @@ namespace Dwapi.Crs.SharedKernel.Utils
         {
             if (guid.HasValue)
                 return guid.Value.ToString("yyyy-MM-dd");
-            
-            return string.Empty;
+
+            return null;
         }
         
         public static string ToStringFormat(this string? guid)
