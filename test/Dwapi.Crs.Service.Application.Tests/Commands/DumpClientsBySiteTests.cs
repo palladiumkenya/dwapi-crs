@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Dwapi.Crs.Service.Application.Tests.Commands
 {
     [TestFixture]
-    public class DumpClientTests
+    public class DumpClientsBySiteTests
     {
         
         private IMediator _mediator;
@@ -20,7 +20,7 @@ namespace Dwapi.Crs.Service.Application.Tests.Commands
         [Test]
         public void should_Dump_Client()
         {
-            var res = _mediator.Send(new DumpClient(new []{11902})).Result;
+            var res = _mediator.Send(new DumpClientsBySite(new []{13075})).Result;
             Assert.True(res.IsSuccess);
         }
     }

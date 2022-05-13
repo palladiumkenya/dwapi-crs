@@ -65,5 +65,7 @@ namespace Dwapi.Crs.Core.Domain
         public string LastRegimen { get; set; }
         public string LastRegimenLine { get; set; }
         public string CurrentOnART { get; set; }
+        public DateTime? DateOfHIVDiagnosis { get; set; }
+        public string LastViralLoadResult { get; set; }
     }
 }

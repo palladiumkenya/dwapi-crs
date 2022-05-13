@@ -16,7 +16,6 @@ namespace Dwapi.Crs.Service.Application.Tests.Commands
         {
             _mediator = TestInitializer.ServiceProvider.GetService<IMediator>();
         }
-        
 
         [Test]
         public void should_Dump_Clients()

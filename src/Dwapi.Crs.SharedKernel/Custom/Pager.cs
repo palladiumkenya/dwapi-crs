@@ -11,9 +11,7 @@ namespace Dwapi.Crs.SharedKernel.Custom
                 if (totalRecords < batchSize)
                 {
                     return 1;
-                }
-
-                
+                } 
                 return (int) Math.Ceiling(totalRecords / (double) batchSize);
             }
 

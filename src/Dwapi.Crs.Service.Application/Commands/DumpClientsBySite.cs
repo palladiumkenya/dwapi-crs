@@ -13,17 +13,17 @@ using Serilog;
 
 namespace Dwapi.Crs.Service.Application.Commands
 {
-    public class DumpClient : IRequest<Result>
+    public class DumpClientsBySite : IRequest<Result>
     {
         public int[] SiteCodes { get; }
 
-        public DumpClient(int[] siteCodes)
+        public DumpClientsBySite(int[] siteCodes)
         {
             SiteCodes = siteCodes;
         }
     }
 
-    public class DumpClientHandler:IRequestHandler<DumpClient,Result>
+    public class DumpClientsBySiteHandler:IRequestHandler<DumpClientsBySite,Result>
     {
         private readonly CrsSettings _crsSettings;
         private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ namespace Dwapi.Crs.Service.Application.Commands
         private readonly IRegistryManifestRepository _manifestRepository;
         private readonly IClientRepository _clientRepository;
 
-        public DumpClientHandler(CrsSettings crsSettings, IMapper mapper, ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository, IClientRepository clientRepository)
+        public DumpClientsBySiteHandler(CrsSettings crsSettings, IMapper mapper, ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository, IClientRepository clientRepository)
         {
             _crsSettings = crsSettings;
             _mapper = mapper;
@@ -40,7 +40,7 @@ namespace Dwapi.Crs.Service.Application.Commands
             _clientRepository = clientRepository;
         }
 
-        public async Task<Result> Handle(DumpClient request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DumpClientsBySite request, CancellationToken cancellationToken)
         {
             Log.Debug("checking for available manifests");
             var manis =await  _manifestRepository.GetReadyForSending(request.SiteCodes);
@@ -56,12 +56,7 @@ namespace Dwapi.Crs.Service.Application.Commands
                     {
                         Log.Debug($"sending {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
-                        var dtos = _mapper.Map<List<ClientRegistryDto>>(clients);
-                        dtos.ForEach(x =>
-                        {
-                            x.Sex = "Male";
-                            x.MaritalStatus = "Single";
-                        });
+                        var dtos = _mapper.Map<List<ClientExchange>>(clients);
                         var res = await _crsDumpService.Dump(dtos);
                         Log.Debug(new string('-', 50));
                         Log.Debug(res.Response);

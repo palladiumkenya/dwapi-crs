@@ -30,5 +30,23 @@ namespace Dwapi.Crs.SharedKernel.Utils
                 return value.ToLower().Trim() == end.ToLower().Trim();
             return false;
         }
+        
+        public static string ToDateFormat(this DateTime? guid)
+        {
+            if (guid.HasValue)
+                return guid.Value.ToString("yyyy-MM-dd");
+            
+            return string.Empty;
+        }
+        
+        public static string ToStringFormat(this string? guid)
+        {
+            if (null == guid)
+                return "";
+            if (string.IsNullOrWhiteSpace(guid))
+                return "";
+            
+            return string.Empty;
+        }
     }
 }

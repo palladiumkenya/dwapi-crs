@@ -7,9 +7,9 @@ namespace Dwapi.Crs.Service.Infrastructure.Tests.TestData
 {
     public class RegistryTestData
     {
-        public static List<ClientRegistryDto> GetData(int count=5)
+        public static List<ClientExchange> GetData(int count=5)
         {
-            return Builder<ClientRegistryDto>.CreateListOfSize(count)
+            return Builder<ClientExchange>.CreateListOfSize(count)
                 .Build()
                 .ToList();
         }

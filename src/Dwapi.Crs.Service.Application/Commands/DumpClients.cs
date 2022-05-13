@@ -50,7 +50,7 @@ namespace Dwapi.Crs.Service.Application.Commands
                     {
                         Log.Debug($"sending {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
-                        var dtos = _mapper.Map<List<ClientRegistryDto>>(clients);
+                        var dtos = _mapper.Map<List<ClientExchange>>(clients);
                         var res=await _crsDumpService.Dump(dtos);
                         Log.Debug(new string('-',50));
                         Log.Debug(res.Response);
@@ -58,13 +58,11 @@ namespace Dwapi.Crs.Service.Application.Commands
                         Log.Debug($"SENT {mani.Name} [{pageNumber} of {pageCount}]");
                     }
                 }
-                
             }
             else
             {
                 Log.Debug("NO manifests found");
             }
-
             return Result.Ok();
         }
     }

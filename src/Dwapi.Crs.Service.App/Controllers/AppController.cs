@@ -56,12 +56,12 @@ namespace Dwapi.Crs.Service.App.Controllers
 
         
         
-        [HttpPost("DumpSingle")]
+        [HttpPost("DumpSite")]
         public async Task<IActionResult> DumpSingle([FromBody] SiteDto siteDto)
         {
             try
             {
-                await  _mediator.Send(new DumpClient(siteDto.SiteCodes));
+                await  _mediator.Send(new DumpClientsBySite(siteDto.SiteCodes));
                 return Ok();
             }
             catch (Exception e)
@@ -82,7 +82,7 @@ namespace Dwapi.Crs.Service.App.Controllers
                 {
                     name = "Dwapi Central - API (CRS SERVICE APP)",
                     status = "running",
-                    build = "13MAY220125"
+                    build = "13MAY221601"
                 });
             }
             catch (Exception e)
