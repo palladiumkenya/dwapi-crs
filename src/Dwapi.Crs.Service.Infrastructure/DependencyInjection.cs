@@ -43,6 +43,7 @@ namespace Dwapi.Crs.Service.Infrastructure
             services.AddScoped<ICrsDumpService, CrsDumpService>();
             
             services.AddScoped<IRegistryManifestRepository, RegistryManifestRepository>();
+            services.AddScoped<ITransmissionLogRepository, TransmissionLogRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
 
             return services;

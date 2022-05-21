@@ -1,5 +1,6 @@
 using System;
 using Dwapi.Crs.Service.App.Filters;
+using Dwapi.Crs.Service.Application;
 using Dwapi.Crs.Service.Infrastructure;
 using Dwapi.Crs.SharedKernel.Infrastructure.Data;
 using Hangfire;

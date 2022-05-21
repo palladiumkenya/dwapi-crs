@@ -58,7 +58,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             }
             catch (Exception e)
             {
-                Log.Error("Dump error", e);
+                Log.Error(e,"Dump error");
                 throw;
             }
         }
@@ -73,7 +73,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             }
             catch (Exception e)
             {
-                Log.Error("Dump error", e);
+                Log.Error(e,"Dump error");
                 throw;
             }
         }
@@ -88,7 +88,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Services
             }
             catch (Exception e)
             {
-                Log.Error("Read error", e);
+                Log.Error(e,"Read error");
                 throw;
             }
         }

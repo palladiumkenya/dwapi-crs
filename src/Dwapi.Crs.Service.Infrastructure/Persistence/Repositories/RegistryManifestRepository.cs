@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
+using Dapper;
 using Dwapi.Crs.Core.Domain;
 using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Interfaces;
@@ -24,13 +25,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
 
         public async Task<List<Manifest>> GetFirstTimers()
         {
-            var sql = @"
-                            select * from (SELECT 
-                                     *,RANK() OVER (PARTITION BY SiteCode ORDER BY DateArrived ASC ) rank_no
-                                FROM Manifests WHERE [End] is not null)x
-                            where rank_no=1 and SiteCode not in (select SiteCode from RegistryManifests)
-                      ";
-
+            var sql = @"select * from vFirstTimers";
             return await _context.Manifests.FromSqlRaw(sql).ToListAsync();
         }
 
@@ -62,7 +57,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Generate error", e);
+                Log.Error(e,"Generate error");
                 throw;
             }
         }
@@ -86,7 +81,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Generate error", e);
+                Log.Error(e,"Generate error");
                 throw;
             }
         }
@@ -106,6 +101,30 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
                 .Where(x => x.CanBeSent)
                 .ToList();
                 
+            return Task.FromResult(ls);
+        }
+
+        public Task<List<RegistryManifest>> GetReport(int[] siteCode = null)
+        {
+
+            if (null != siteCode && siteCode.Length > 0)
+            {
+                var list = _context.RegistryManifests.Include(c => c.TransmissionLogs).ToList()
+                    .Where(x => siteCode.Contains(x.SiteCode))
+                    .ToList();
+                return Task.FromResult(list);
+            }
+
+            var ls = _context.RegistryManifests.Include(c=>c.TransmissionLogs).ToList()
+                .ToList();
+                
+            return Task.FromResult(ls);
+        }
+
+        public Task<List<SiteReportDto>> GetSiteReport()
+        {
+            var sql = @"select * from vSiteReports";
+            var ls = _context.Database.GetDbConnection().Query<SiteReportDto>(sql).ToList();
             return Task.FromResult(ls);
         }
     }

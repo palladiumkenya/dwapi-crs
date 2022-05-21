@@ -5,6 +5,7 @@ using Dwapi.Crs.Core.Domain.Dto;
 using Dwapi.Crs.Core.Interfaces.Repository;
 using Dwapi.Crs.Core.Interfaces.Service;
 using Dwapi.Crs.Service.Application.Commands;
+using Dwapi.Crs.Service.Application.Queries;
 using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -91,6 +92,25 @@ namespace Dwapi.Crs.Service.App.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        
+        [HttpGet("Report")]
+        public async Task<IActionResult> Report(int[] siteCodes)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetReport(siteCodes));
+                if (result.IsSuccess)
+                    return Ok(result.Value);
+
+                throw new Exception(result.Error);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "report error");
+                return StatusCode(500, e.Message);
+            }
+        }
+
 
     }
 }

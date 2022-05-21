@@ -1,12 +1,10 @@
-using System;
 using AutoMapper;
 using Dwapi.Crs.Service.Application.Commands;
 using Dwapi.Crs.Service.Application.Domain;
-using Dwapi.Crs.Service.Application.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dwapi.Crs.Service.Infrastructure
+namespace Dwapi.Crs.Service.Application
 {
 
     public static class DependencyInjection
