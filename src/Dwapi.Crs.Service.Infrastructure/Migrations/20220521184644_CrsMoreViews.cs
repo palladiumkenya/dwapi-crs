@@ -45,8 +45,6 @@ FROM
 vTransmissionAttempts ON vSiteManifests.SiteCode = vTransmissionAttempts.SiteCode
                         ");
             
-            
-        
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
