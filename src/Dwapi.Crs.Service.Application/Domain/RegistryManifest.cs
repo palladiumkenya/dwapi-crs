@@ -13,6 +13,7 @@ namespace Dwapi.Crs.Service.Application.Domain
         public int SiteCode { get;  private set; }
         public string Name { get;private set; }
         public long? Records { get;private set; }
+        public long? ActiveRecords { get;private set; }
         public ICollection<TransmissionLog> TransmissionLogs { get; set; } = new List<TransmissionLog>();
 
         public bool CanBeSent => CheckReadiness();
@@ -43,6 +44,11 @@ namespace Dwapi.Crs.Service.Application.Domain
         public void UpdateRecords(long count)
         {
             Records = count;
+        }
+        
+        public void UpdateActiveRecords(long count)
+        {
+            ActiveRecords = count;
         }
 
         public static  RegistryManifest Create(Manifest firstTime)

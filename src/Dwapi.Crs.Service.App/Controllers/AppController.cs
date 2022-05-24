@@ -24,7 +24,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
 
         [HttpPost("Generate")]
-        public async Task<IActionResult> Generate([FromBody] SiteDto manifestDto)
+        public async Task<IActionResult> Generate()
         { 
             try
             {
@@ -39,7 +39,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
         
         [HttpPost("DumpAll")]
-        public async Task<IActionResult> Dump([FromBody] SiteDto manifestDto)
+        public async Task<IActionResult> Dump()
         {
             try
             {

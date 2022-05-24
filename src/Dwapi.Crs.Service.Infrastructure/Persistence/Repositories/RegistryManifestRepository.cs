@@ -74,6 +74,8 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
                 {
                     var count = _context.ClientRegistries.LongCount(x => x.FacilityId == mani.FacilityId);
                     mani.UpdateRecords(count);
+                    var activeCount = _context.ClientRegistries.LongCount(x => x.FacilityId == mani.FacilityId && (x.CurrentOnART.ToLower()=="yes" || x.CurrentOnART.ToLower()=="y"));
+                    mani.UpdateActiveRecords(activeCount);
                     _context.Update(mani);
                  await   _context.SaveChangesAsync();
                 }
