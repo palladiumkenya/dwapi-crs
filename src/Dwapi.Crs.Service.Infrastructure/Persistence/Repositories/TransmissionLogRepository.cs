@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Interfaces;
@@ -21,6 +22,26 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
             {
                 _context.Add(log);
                 await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error( e,"TransmissionLog error");
+            }
+
+            return false;
+        }
+
+        public async Task<bool> Clear(Guid manifestId)
+        {
+            try
+            {
+                var mani= _context.TransmissionLogs.Where(x=>x.RegistryManifestId==manifestId);
+                if (mani.Any())
+                {
+                    _context.RemoveRange(mani);
+                    await _context.SaveChangesAsync();
+                }
                 return true;
             }
             catch (Exception e)

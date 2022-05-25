@@ -32,10 +32,11 @@ namespace Dwapi.Crs.Service.Application.Commands
         private readonly ICrsDumpService _crsDumpService;
         private readonly IRegistryManifestRepository _manifestRepository;
         private readonly IClientRepository _clientRepository;
+        private readonly ITransmissionLogRepository _transmissionLogRepository;
 
         public DumpClientsBySiteHandler(IMediator mediator, CrsSettings crsSettings, IMapper mapper,
             ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository,
-            IClientRepository clientRepository)
+            IClientRepository clientRepository, ITransmissionLogRepository transmissionLogRepository)
         {
             _mediator = mediator;
             _crsSettings = crsSettings;
@@ -43,6 +44,7 @@ namespace Dwapi.Crs.Service.Application.Commands
             _crsDumpService = crsDumpService;
             _manifestRepository = manifestRepository;
             _clientRepository = clientRepository;
+            _transmissionLogRepository = transmissionLogRepository;
         }
 
         public async Task<Result> Handle(DumpClientsBySite request, CancellationToken cancellationToken)
@@ -55,6 +57,9 @@ namespace Dwapi.Crs.Service.Application.Commands
                 
                 foreach (var mani in manis)
                 {
+                    // clear transmission Log
+                    await _transmissionLogRepository.Clear(mani.Id);
+                    
                     var pageCount = Pager.PageCount(_crsSettings.Batches, mani.Records.Value);
 
                     for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)

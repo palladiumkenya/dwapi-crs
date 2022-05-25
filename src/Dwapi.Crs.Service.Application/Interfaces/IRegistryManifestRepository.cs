@@ -14,5 +14,8 @@ namespace Dwapi.Crs.Service.Application.Interfaces
         
         Task<List<RegistryManifest>> GetReport(int [] siteCode=null);
         Task<List<SiteReportDto>> GetSiteReport();
+
+        Task<List<TheReportDto>> GetTheReport();
+
     }
 }

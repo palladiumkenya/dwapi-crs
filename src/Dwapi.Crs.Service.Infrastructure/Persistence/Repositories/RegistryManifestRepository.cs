@@ -129,5 +129,12 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
             var ls = _context.Database.GetDbConnection().Query<SiteReportDto>(sql).ToList();
             return Task.FromResult(ls);
         }
+
+        public Task<List<TheReportDto>> GetTheReport()
+        {
+            var sql = @"select * from vTheReport";
+            var ls = _context.Database.GetDbConnection().Query<TheReportDto>(sql).ToList();
+            return Task.FromResult(ls);
+        }
     }
 }

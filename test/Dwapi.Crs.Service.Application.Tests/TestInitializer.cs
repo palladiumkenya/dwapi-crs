@@ -36,8 +36,9 @@ namespace Dwapi.Crs.Service.Application.Tests
 
         private void InitDB()
         {
-            var ctxx = ServiceProvider.GetService<CrsServiceContext>();
-            ctxx.Database.Migrate();
+            var context = ServiceProvider.GetService<CrsServiceContext>();
+            context.Database.EnsureCreated();
+            context.Database.Migrate();
         }
     }
 }
