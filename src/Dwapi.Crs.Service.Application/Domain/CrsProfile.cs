@@ -85,19 +85,6 @@ namespace Dwapi.Crs.Service.Application.Domain
                     src.LastRegimenLine));
             // .ForMember(dest => dest.ccurrent_on_art, opt => opt.MapFrom(src =>
             //     src.CurrentOnART.ToUpper()));
-
-
-            CreateMap<RegistryManifest, ReportDto>()
-                .ForMember(dest => dest.Errors, opt => opt.MapFrom(src =>
-                    src.TransmissionLogs));
-            
-            CreateMap<TransmissionLog,ReportErrorDto>()
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(src =>
-                    src.Response))
-                .ForMember(dest => dest.ErrorDetail, opt => opt.MapFrom(src =>
-                    src.ResponseInfo))
-                .ForMember(dest => dest.ErrorDate, opt => opt.MapFrom(src =>
-                    src.Created));
         }
     }
 }

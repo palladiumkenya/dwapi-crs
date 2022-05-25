@@ -94,11 +94,11 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
         
         [HttpGet("Report")]
-        public async Task<IActionResult> Report(int[] siteCodes)
+        public async Task<IActionResult> Report()
         {
             try
             {
-                var result = await _mediator.Send(new GetReport(siteCodes));
+                var result = await _mediator.Send(new GetTheReport());
                 if (result.IsSuccess)
                     return Ok(result.Value);
 

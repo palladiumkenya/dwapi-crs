@@ -13,9 +13,6 @@ namespace Dwapi.Crs.Service.Application.Interfaces
         Task<List<RegistryManifest>> GetReadyForSending(int [] siteCode=null);
         
         Task<List<RegistryManifest>> GetReport(int [] siteCode=null);
-        Task<List<SiteReportDto>> GetSiteReport();
-
         Task<List<TheReportDto>> GetTheReport();
-
     }
 }
