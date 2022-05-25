@@ -73,7 +73,7 @@ namespace Dwapi.Crs.Service.App
                 {
                     // Check if it NOT IIS c.SwaggerEndpoint("/swagger/v1/swagger.json", "DWAPI Central CRS API");
                     c.SwaggerEndpoint("../swagger/v1/swagger.json", "DWAPI Central CRS SERVICE APP API");
-                    c.SupportedSubmitMethods(new Swashbuckle.AspNetCore.SwaggerUI.SubmitMethod[] { });
+                    // c.SupportedSubmitMethods(new Swashbuckle.AspNetCore.SwaggerUI.SubmitMethod[] { });
                 });
             }
            

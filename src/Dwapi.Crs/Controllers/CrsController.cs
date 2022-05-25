@@ -95,7 +95,7 @@ namespace Dwapi.Crs.Controllers
                 {
                     name = "Dwapi Central - API (CRS)",
                     status = "running",
-                    build = "09MAY221650"
+                    build = "25MAY220706"
                 });
             }
             catch (Exception e)
