@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Dwapi.Crs.Core.Command;
 using Dwapi.Crs.Core.Domain.Dto;
@@ -110,7 +111,59 @@ namespace Dwapi.Crs.Service.App.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        
+        [HttpGet("PendingReport")]
+        public async Task<IActionResult> PendingReport()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetTheReport());
+                if (result.IsSuccess)
+                    return Ok(result.Value.Where(x=>x.IsPending));
 
+                throw new Exception(result.Error);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "report error");
+                return StatusCode(500, e.Message);
+            }
+        }
+        
+        [HttpGet("TransmissionReport")]
+        public async Task<IActionResult> TransmissionReport()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetTheReport());
+                if (result.IsSuccess)
+                    return Ok(result.Value.Where(x=>x.IsTransmitted));
 
+                throw new Exception(result.Error);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "report error");
+                return StatusCode(500, e.Message);
+            }
+        }
+          
+        [HttpGet("ErrorReport/{siteCode}")]
+        public async Task<IActionResult> ErrorReport(int siteCode)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetErrorReport(siteCode));
+                if (result.IsSuccess)
+                    return Ok(result.Value);
+
+                throw new Exception(result.Error);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "report error");
+                return StatusCode(500, e.Message);
+            }
+        }
     }
 }

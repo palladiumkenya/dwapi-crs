@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Dwapi.Crs.Core.Domain;
 using Dwapi.Crs.Service.Application.Domain;
+using Dwapi.Crs.Service.Application.Domain.Dtos;
 using Dwapi.Crs.Service.Application.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -106,26 +107,19 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
             return Task.FromResult(ls);
         }
 
-        public Task<List<RegistryManifest>> GetReport(int[] siteCode = null)
+        public async Task<RegistryManifest> GetErrorReport(int siteCode)
         {
+            var site = _context.RegistryManifests.AsNoTracking().FirstOrDefault(x => x.SiteCode == siteCode);
+            if (null != site)
+                site.TransmissionLogs = _context.TransmissionLogs.AsNoTracking()
+                    .Where(x => x.RegistryManifestId == site.Id && x.Response == Response.Failed).ToList();
 
-            if (null != siteCode && siteCode.Length > 0)
-            {
-                var list = _context.RegistryManifests.Include(c => c.TransmissionLogs).ToList()
-                    .Where(x => siteCode.Contains(x.SiteCode))
-                    .ToList();
-                return Task.FromResult(list);
-            }
-
-            var ls = _context.RegistryManifests.Include(c=>c.TransmissionLogs).ToList()
-                .ToList();
-                
-            return Task.FromResult(ls);
+            return site;
         }
         
         public Task<List<TheReportDto>> GetTheReport()
         {
-            var sql = @"select * from vTheReport";
+            var sql = @"select * from vTheReport order by DateArrived desc,SiteCode,ResponseStatusDate desc";
             var ls = _context.Database.GetDbConnection().Query<TheReportDto>(sql).ToList();
             return Task.FromResult(ls);
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dwapi.Crs.Service.Application.Domain
+namespace Dwapi.Crs.Service.Application.Domain.Dtos
 {
     public class TheReportDto
     {
@@ -14,6 +14,8 @@ namespace Dwapi.Crs.Service.Application.Domain
         public string Status => ResponseStatusDate.HasValue ? ResponseStatus.ToString() : "Pending";
         public Response ResponseStatus { get; set; }
         public DateTime? ResponseStatusDate { get; set; }
+        public bool IsPending => Status == "Pending";
+        public bool IsTransmitted => Status != "Pending";
 
         public override string ToString()
         {

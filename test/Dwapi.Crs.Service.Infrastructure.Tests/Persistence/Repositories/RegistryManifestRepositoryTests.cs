@@ -1,3 +1,5 @@
+using System.Linq;
+using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Interfaces;
 using Microsoft.EntityFrameworkCore.Internal;
 using NUnit.Framework;
@@ -48,6 +50,13 @@ namespace Dwapi.Crs.Service.Infrastructure.Tests.Persistence.Repositories
         {
             var manifests = _manifestRepository.GetReadyForSending(new []{13075}).Result;
             Assert.True(manifests.Any());
+        }
+
+        [Test]
+        public void should_Get_ErrorReport()
+        {
+            var manifests = _manifestRepository.GetErrorReport(12602).Result;
+            Assert.True(manifests.TransmissionLogs.Any(x => x.Response != Response.Sent));
         }
     }
 }

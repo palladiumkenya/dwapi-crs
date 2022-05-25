@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using Dwapi.Crs.Service.Application.Domain.Dtos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Serilog;

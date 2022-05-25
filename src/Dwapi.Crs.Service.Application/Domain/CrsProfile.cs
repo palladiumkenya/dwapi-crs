@@ -1,5 +1,6 @@
 using AutoMapper;
 using Dwapi.Crs.Core.Domain;
+using Dwapi.Crs.Service.Application.Domain.Dtos;
 using Dwapi.Crs.SharedKernel.Utils;
 
 namespace Dwapi.Crs.Service.Application.Domain
@@ -85,6 +86,9 @@ namespace Dwapi.Crs.Service.Application.Domain
                     src.LastRegimenLine));
             // .ForMember(dest => dest.ccurrent_on_art, opt => opt.MapFrom(src =>
             //     src.CurrentOnART.ToUpper()));
+
+            CreateMap<RegistryManifest, ErrorReportDto>();
+            CreateMap<TransmissionLog, TransmissionLogDto>();
         }
     }
 }

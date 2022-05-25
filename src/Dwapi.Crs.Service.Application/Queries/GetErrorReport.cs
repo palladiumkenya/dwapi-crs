@@ -12,32 +12,39 @@ using Serilog;
 
 namespace Dwapi.Crs.Service.Application.Queries
 {
-    public class GetTheReport:IRequest<Result<List<TheReportDto>>>
+    public class GetErrorReport:IRequest<Result<ErrorReportDto>>
     {
+        public int SiteCode { get; }
+
+        public GetErrorReport(int siteCode)
+        {
+            SiteCode = siteCode;
+        }
     }
 
-    public class GetTheReportHandler : IRequestHandler<GetTheReport, Result<List<TheReportDto>>>
+    public class GetErrorReportHandler : IRequestHandler<GetErrorReport, Result<ErrorReportDto>>
     {
         private readonly IMapper _mapper;
         private readonly IRegistryManifestRepository _repository;
 
-        public GetTheReportHandler(IMapper mapper, IRegistryManifestRepository repository)
+        public GetErrorReportHandler(IMapper mapper, IRegistryManifestRepository repository)
         {
             _mapper = mapper;
             _repository = repository;
         }
 
-        public async Task<Result<List<TheReportDto>>> Handle(GetTheReport request, CancellationToken cancellationToken)
+        public async Task<Result<ErrorReportDto>> Handle(GetErrorReport request, CancellationToken cancellationToken)
         {
             try
             {
-                var report = await _repository.GetTheReport();
-                return Result.Ok(report);
+                var report = await _repository.GetErrorReport(request.SiteCode);
+                var errorReport = _mapper.Map<ErrorReportDto>(report);
+                return Result.Ok(errorReport);
             }
             catch (Exception e)
             {
                 Log.Error(e,"Report Error");
-                   return Result.Fail<List<TheReportDto>>(e.Message);
+                   return Result.Fail<ErrorReportDto>(e.Message);
             }
         }
     }

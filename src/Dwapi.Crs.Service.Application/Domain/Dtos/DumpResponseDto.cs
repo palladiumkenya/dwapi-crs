@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dwapi.Crs.Service.Application.Commands;
 
-namespace Dwapi.Crs.Service.Application.Domain
+namespace Dwapi.Crs.Service.Application.Domain.Dtos
 {
     public class DumpResponseDto
     {
