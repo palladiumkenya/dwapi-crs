@@ -22,8 +22,7 @@ namespace Dwapi.Crs.Service.Application.Domain
             {
                 try
                 {
-                    ResponseDto = JsonConvert.DeserializeObject<DumpResponseDto>($"DumpResponseDto:{response}");
-                    Response = $"{ResponseDto}";
+                    Response = response.Replace("{},","").Replace(",{}","");
                 }
                 catch (Exception e)
                 {

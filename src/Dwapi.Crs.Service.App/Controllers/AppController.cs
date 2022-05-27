@@ -64,7 +64,7 @@ namespace Dwapi.Crs.Service.App.Controllers
             try
             {
                 await  _mediator.Send(new DumpClientsBySite(siteDto.SiteCodes));
-                return Ok();
+                return Ok(siteDto.SiteCodes);
             }
             catch (Exception e)
             {

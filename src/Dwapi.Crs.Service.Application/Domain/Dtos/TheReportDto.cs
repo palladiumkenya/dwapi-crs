@@ -1,4 +1,5 @@
 ﻿using System;
+using Humanizer;
 
 namespace Dwapi.Crs.Service.Application.Domain.Dtos
 {
@@ -16,6 +17,9 @@ namespace Dwapi.Crs.Service.Application.Domain.Dtos
         public DateTime? ResponseStatusDate { get; set; }
         public bool IsPending => Status == "Pending";
         public bool IsTransmitted => Status != "Pending";
+
+        public string ArrivedAgo => DateArrived.Humanize(false);
+        public string ResponseAgo => ResponseStatusDate.HasValue ? ResponseStatusDate.Humanize(false) : "";
 
         public override string ToString()
         {

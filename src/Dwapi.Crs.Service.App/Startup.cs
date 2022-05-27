@@ -21,7 +21,7 @@ namespace Dwapi.Crs.Service.App
     {
         public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IWebHostEnvironment environment,IConfiguration configuration)
         {
             Environment = environment;
@@ -30,6 +30,17 @@ namespace Dwapi.Crs.Service.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:3000","http://localhost:4747","https://localhost:4743","http://livedev:3000","https://*.kenyahmis.org")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
             services.AddControllersWithViews();
             services.AddInfrastructure(Configuration);
             services.AddApplication();
@@ -57,6 +68,9 @@ namespace Dwapi.Crs.Service.App
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
+            
+            
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseSwagger();
             if (env.IsDevelopment())

@@ -20,7 +20,7 @@ namespace Dwapi.Crs.Service.Application.Commands
 
         public DumpClientsBySite(int[] siteCodes)
         {
-            SiteCodes = siteCodes;
+            SiteCodes = siteCodes.Distinct().ToArray();
         }
     }
 
