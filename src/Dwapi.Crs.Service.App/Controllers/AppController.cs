@@ -9,6 +9,7 @@ using Dwapi.Crs.Service.Application.Commands;
 using Dwapi.Crs.Service.Application.Queries;
 using Hangfire;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -23,7 +24,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         {
             _mediator = mediator;
         }
-
+        [Authorize]
         [HttpPost("Generate")]
         public async Task<IActionResult> Generate()
         { 
@@ -38,7 +39,7 @@ namespace Dwapi.Crs.Service.App.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-        
+        [Authorize]
         [HttpPost("DumpAll")]
         public async Task<IActionResult> Dump()
         {
@@ -57,7 +58,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
 
         
-        
+        [Authorize]
         [HttpPost("DumpSite")]
         public async Task<IActionResult> DumpSingle([FromBody] SiteDto siteDto)
         {

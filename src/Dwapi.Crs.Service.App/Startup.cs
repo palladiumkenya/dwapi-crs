@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Dwapi.Crs.Service.App.Filters;
 using Dwapi.Crs.Service.Application;
+using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Infrastructure;
 using Dwapi.Crs.SharedKernel.Infrastructure.Data;
 using Hangfire;
@@ -12,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Z.Dapper.Plus;
 
@@ -35,7 +38,7 @@ namespace Dwapi.Crs.Service.App
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:3000","http://localhost:4747","https://localhost:4743","http://livedev:3000","https://*.kenyahmis.org")
+                        policy.WithOrigins(GetOrigins(Configuration))
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -44,7 +47,43 @@ namespace Dwapi.Crs.Service.App
             services.AddControllersWithViews();
             services.AddInfrastructure(Configuration);
             services.AddApplication();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c=>
+            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "DWAPI Central CRS SERVICE APP API",
+                        Version = "v1",
+                    });
+                c.CustomSchemaIds(x => x.FullName);
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,7 +110,8 @@ namespace Dwapi.Crs.Service.App
             
             
             app.UseCors(MyAllowSpecificOrigins);
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseSwagger();
             if (env.IsDevelopment())
             {
@@ -165,6 +205,11 @@ namespace Dwapi.Crs.Service.App
                 Log.Debug($"initializing Database context: {contextName} Error");
                 Log.Debug($"{e}");
             }
+        }
+        
+        private string[] GetOrigins(IConfiguration configuration)
+        {
+            return configuration.GetValue<string>($"{nameof(AuthSettings)}:{nameof(AuthSettings.Origins)}").Split(',');
         }
     }
 }

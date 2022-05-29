@@ -6,6 +6,7 @@ using Dwapi.Crs.Service.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -17,6 +18,13 @@ namespace Dwapi.Crs.Service.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var authSettings = new AuthSettings(
+                configuration.GetValue<string>($"{nameof(AuthSettings)}:{nameof(AuthSettings.Authority)}"),
+                configuration.GetValue<string>($"{nameof(AuthSettings)}:{nameof(AuthSettings.Origins)}"),
+                configuration.GetValue<string>($"{nameof(AuthSettings)}:{nameof(AuthSettings.Client)}"),
+                configuration.GetValue<string>($"{nameof(AuthSettings)}:{nameof(AuthSettings.Secret)}")
+            );
+            
             var crsSettings = new CrsSettings(
                 configuration.GetValue<string>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Url)}"),
                 configuration.GetValue<bool>($"{nameof(CrsSettings)}:{nameof(CrsSettings.CertificateValidation)}"),
@@ -25,6 +33,28 @@ namespace Dwapi.Crs.Service.Infrastructure
                 configuration.GetValue<int>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Batches)}")
             );
 
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = authSettings.Authority;
+                    options.RequireHttpsMetadata = false;
+                    // options.Audience = "crsserviceapi";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+                // .AddOpenIdConnect("oidc", opt =>
+                // {
+                //     opt.SignInScheme = "Cookies";
+                //     opt.Authority = authSettings.Authority;;
+                //     opt.ClientId = authSettings.Client;;
+                //     opt.ResponseType = "code id_token";
+                //     opt.SaveTokens = true;
+                //     opt.ClientSecret = authSettings.Secret;
+                // });
+                
+            
             var options = new RestClientOptions(crsSettings.Url)
             {
                 FollowRedirects = false
