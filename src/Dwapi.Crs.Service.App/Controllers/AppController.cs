@@ -24,7 +24,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         {
             _mediator = mediator;
         }
-        [Authorize]
+        [Authorize(Roles = "UpiManager")]
         [HttpPost("Generate")]
         public async Task<IActionResult> Generate()
         { 
@@ -39,7 +39,7 @@ namespace Dwapi.Crs.Service.App.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-        [Authorize]
+        [Authorize(Roles = "UpiManager")]
         [HttpPost("DumpAll")]
         public async Task<IActionResult> Dump()
         {
@@ -58,7 +58,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
 
         
-        [Authorize]
+        [Authorize(Roles = "UpiManager")]
         [HttpPost("DumpSite")]
         public async Task<IActionResult> DumpSingle([FromBody] SiteDto siteDto)
         {
