@@ -38,10 +38,13 @@ namespace Dwapi.Crs.Service.Infrastructure
                 {
                     options.Authority = authSettings.Authority;
                     options.RequireHttpsMetadata = false;
+         
                     // options.Audience = "crsserviceapi";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = false
+                        ValidateAudience = false,ValidateIssuer=false
+                        
+                        
                     };
                 });
                 // .AddOpenIdConnect("oidc", opt =>
