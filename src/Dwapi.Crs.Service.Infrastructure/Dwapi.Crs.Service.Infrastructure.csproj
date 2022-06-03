@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="CsvHelper" Version="15.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.25" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.25" />
@@ -24,6 +25,10 @@
     <ProjectReference Include="..\Dwapi.Crs.Core\Dwapi.Crs.Core.csproj" />
     <ProjectReference Include="..\Dwapi.Crs.Service.Application\Dwapi.Crs.Service.Application.csproj" />
     <ProjectReference Include="..\Dwapi.Crs.SharedKernel.Infrastructure\Dwapi.Crs.SharedKernel.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Seed\SpotFacility.csv" />
   </ItemGroup>
 
 </Project>

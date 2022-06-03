@@ -4,14 +4,16 @@ using Dwapi.Crs.Service.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dwapi.Crs.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(CrsServiceContext))]
-    partial class CrsServiceContextModelSnapshot : ModelSnapshot
+    [Migration("20220603174228_SpotFacsViews")]
+    partial class SpotFacsViews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
