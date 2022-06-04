@@ -37,7 +37,7 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.sex, opt => opt.MapFrom(src =>
                     src.Sex))
                 .ForMember(dest => dest.marital_status, opt => opt.MapFrom(src =>
-                    src.MaritalStatus))
+                    src.MaritalStatus.Transfrom("Marital")))
                 .ForMember(dest => dest.occupation, opt => opt.MapFrom(src =>
                     src.Occupation))
                 .ForMember(dest => dest.education_level, opt => opt.MapFrom(src =>
@@ -65,7 +65,7 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.village, opt => opt.MapFrom(src =>
                     src.Village))
                 .ForMember(dest => dest.landmark, opt => opt.MapFrom(src =>
-                    src.Landmark))
+                    src.Landmark.Truncate(59)))
                 .ForMember(dest => dest.facility_name, opt => opt.MapFrom(src =>
                     src.FacilityName))
                 .ForMember(dest => dest.facility_mfl, opt => opt.MapFrom(src =>
