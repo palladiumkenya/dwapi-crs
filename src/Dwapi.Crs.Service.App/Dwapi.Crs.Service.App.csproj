@@ -8,6 +8,7 @@
         <AssemblyName>Dwapi.Crs.Service.App</AssemblyName>
         <RootNamespace>Dwapi.Crs.Service.App</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <Version>1.0.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>

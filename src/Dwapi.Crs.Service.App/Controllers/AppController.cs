@@ -85,6 +85,7 @@ namespace Dwapi.Crs.Service.App.Controllers
                 {
                     name = "Dwapi Central - API (CRS SERVICE APP)",
                     status = "running",
+                    version=$"{GetType().Assembly.GetName().Version}",
                     build = "25MAY220706"
                 });
             }
