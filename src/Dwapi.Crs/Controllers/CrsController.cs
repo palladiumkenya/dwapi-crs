@@ -75,12 +75,32 @@ namespace Dwapi.Crs.Controllers
             if (null == extract) return BadRequest();
             try
             {
-                var id = BackgroundJob.Enqueue(() => _crsService.Process(extract.CrsExtracts));
+                var id = BackgroundJob.Enqueue(() => _crsService.Process(extract.ClientRegistryExtracts));
                 return Ok(new {BatchKey = id});
             }
             catch (Exception e)
             {
                 Log.Error(e, "ClientRegistry error");
+                return StatusCode(500, e.Message);
+            }
+        }
+        
+        [HttpGet("Status")]
+        public IActionResult GetStatus()
+        {
+            try
+            {
+                var ver = GetType().Assembly.GetName().Version;
+                return Ok(new
+                {
+                    name = "Dwapi Central - API (CRS)",
+                    status = "running",
+                    build = "25MAY220706"
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "status error");
                 return StatusCode(500, e.Message);
             }
         }
