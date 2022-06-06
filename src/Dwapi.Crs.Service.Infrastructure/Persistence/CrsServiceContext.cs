@@ -24,11 +24,11 @@ namespace Dwapi.Crs.Service.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<Manifest>();
-            modelBuilder.Ignore<ClientRegistry>(); 
+            //modelBuilder.Ignore<Manifest>();
+            //modelBuilder.Ignore<ClientRegistry>(); 
             
-            // modelBuilder.Entity<Manifest>(entity => entity.ToView("Manifests", "dbo"));
-            // modelBuilder.Entity<ClientRegistry>(entity => entity.ToView("ClientRegistries", "dbo")); 
+            modelBuilder.Entity<Manifest>(entity => entity.ToView("Manifests", "dbo"));
+            modelBuilder.Entity<ClientRegistry>(entity => entity.ToView("ClientRegistries", "dbo")); 
             
             DapperPlusManager.Entity<RegistryManifest>().Key(x => x.Id).Table($"{nameof(RegistryManifests)}");
             DapperPlusManager.Entity<TransmissionLog>().Key(x => x.Id).Table($"{nameof(TransmissionLogs)}");
