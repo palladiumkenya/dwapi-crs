@@ -15,7 +15,7 @@ namespace Dwapi.Crs.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.15")
+                .HasAnnotation("ProductVersion", "3.1.25")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -71,10 +71,16 @@ namespace Dwapi.Crs.Infrastructure.Migrations
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CurrentOnART")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DateExtracted")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfHIVDiagnosis")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateOfInitiation")
@@ -117,6 +123,15 @@ namespace Dwapi.Crs.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastRegimen")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastRegimenLine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastViralLoadResult")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -172,6 +187,9 @@ namespace Dwapi.Crs.Infrastructure.Migrations
 
                     b.Property<Guid?>("RefId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("SatelliteId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Sex")
                         .HasColumnType("nvarchar(max)");

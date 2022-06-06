@@ -75,7 +75,7 @@ namespace Dwapi.Crs.Controllers
             if (null == extract) return BadRequest();
             try
             {
-                var id = BackgroundJob.Enqueue(() => _crsService.Process(extract.CrsExtracts));
+                var id = BackgroundJob.Enqueue(() => _crsService.Process(extract.ClientRegistryExtracts));
                 return Ok(new {BatchKey = id});
             }
             catch (Exception e)
@@ -95,7 +95,7 @@ namespace Dwapi.Crs.Controllers
                 {
                     name = "Dwapi Central - API (CRS)",
                     status = "running",
-                    build = "09MAY221650"
+                    build = "25MAY220706"
                 });
             }
             catch (Exception e)

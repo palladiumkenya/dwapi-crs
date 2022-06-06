@@ -53,6 +53,7 @@ namespace Dwapi.Crs.Core.Service
                 foreach (var manifest in manifests)
                 {
                     var clientCount = _manifestRepository.GetPatientCount(manifest.Id);
+                    _manifestRepository.updateCount(manifest.Id,clientCount);
                     _liveSyncService.SyncManifest(manifest,clientCount);
 
                     try

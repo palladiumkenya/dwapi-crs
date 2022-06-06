@@ -15,5 +15,6 @@ namespace Dwapi.Crs.Core.Interfaces.Repository
         IEnumerable<Manifest> GetStaged(int siteCode);
         Task EndSession(Guid session);
         IEnumerable<HandshakeDto> GetSessionHandshakes(Guid session);
+        void updateCount(Guid id,int clientCount);
     }
 }
