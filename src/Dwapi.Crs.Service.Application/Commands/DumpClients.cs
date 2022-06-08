@@ -58,6 +58,7 @@ namespace Dwapi.Crs.Service.Application.Commands
                         Log.Debug($"sending {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
                         var dtos = _mapper.Map<List<ClientExchange>>(clients);
+                        dtos = dtos.Where(x => x.IsValid()).ToList();
                         var res=await _crsDumpService.Dump(dtos);
                         var responseInfo = $"Page:{pageNumber}/{pageCount}, Clients:{dtos.Count}, Response:{res.Response}";
                         await _mediator.Publish(new SiteDumped(mani.Id,res.StatusCode,responseInfo));

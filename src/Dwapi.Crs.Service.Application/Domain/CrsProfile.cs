@@ -31,7 +31,7 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.middle_name, opt => opt.MapFrom(src =>
                     src.MiddleName.ToUpper()))
                 .ForMember(dest => dest.last_name, opt => opt.MapFrom(src =>
-                    src.LastName.ToUpper()))
+                    src.LastName.Transfrom("Name").ToUpper()))
                 .ForMember(dest => dest.date_of_birth, opt => opt.MapFrom(src =>
                     src.DateOfBirth.ToDateFormat()))
                 .ForMember(dest => dest.sex, opt => opt.MapFrom(src =>

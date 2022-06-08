@@ -41,5 +41,10 @@ namespace Dwapi.Crs.Service.Application.Domain
         public string date_of_next_appointment { get; set; }
         public string last_regimen { get; set; }
         public string last_regimen_line { get; set; }
+
+        public bool IsValid()
+        {
+            return !string.IsNullOrWhiteSpace(ccc_no);
+        }
     }
 }

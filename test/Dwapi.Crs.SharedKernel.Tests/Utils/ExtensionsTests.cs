@@ -25,6 +25,8 @@ namespace Dwapi.Crs.SharedKernel.Tests.TestData.Utils
         [TestCase("Marital","Single","Single")]
         [TestCase("Marital","Unkown","Unknown")]
         [TestCase("Marital","Unknown","Unknown")]
+        [TestCase("Name"," ","Unknown")]
+        [TestCase("Name",null,"Unknown")]
         public void should_Transform(string cat, string val,string tVal)
         {
             var tf = val.Transfrom(cat);

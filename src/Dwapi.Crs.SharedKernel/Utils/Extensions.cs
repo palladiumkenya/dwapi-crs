@@ -79,6 +79,16 @@ namespace Dwapi.Crs.SharedKernel.Utils
                 return value;
             }
             
+            if (category == "Name")
+            {
+                if (null == value)
+                    return "Unknown";
+                if (string.IsNullOrWhiteSpace(value))
+                    return "Unknown";
+                return value;
+            }
+
+            
             if (null == value)
                 return "";
             if (string.IsNullOrWhiteSpace(value))
