@@ -156,7 +156,7 @@ namespace Dwapi.Crs.Service.App.Controllers
             {
                 var result = await _mediator.Send(new GetTheReport());
                 if (result.IsSuccess)
-                    return Ok(result.Value.Where(x=>!x.IsReady));
+                    return Ok(result.Value.Where(x=>x.IsReady));
 
                 throw new Exception(result.Error);
             }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Dwapi.Crs.Service.App.Filters;
+using Dwapi.Crs.Service.App.Hubs;
 using Dwapi.Crs.Service.Application;
 using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Infrastructure;
@@ -46,6 +47,7 @@ namespace Dwapi.Crs.Service.App
                     });
             });
             services.AddControllersWithViews();
+            services.AddSignalR();
             services.AddInfrastructure(Configuration);
             services.AddApplication();
             services.AddSwaggerGen(c=>
@@ -137,6 +139,7 @@ namespace Dwapi.Crs.Service.App
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHub<TransmissionHub>($"/{nameof(TransmissionHub).ToLower()}");
             });
 
             EnsureMigrationOfContext<CrsServiceContext>(serviceProvider);

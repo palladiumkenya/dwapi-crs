@@ -19,7 +19,7 @@ namespace Dwapi.Crs.Service.Application.Domain.Dtos
         public string Agency { get;  set; }
         public string Partner { get;  set; }
         public bool IsPending => Status == "Pending";
-        public bool IsReady => !ResponseStatusDate.HasValue;
+        public bool IsReady =>string.IsNullOrWhiteSpace(ResponseStatus.ToString());
         
         public bool IsTransmitted => Status != "Pending";
 
