@@ -73,6 +73,41 @@ namespace Dwapi.Crs.Service.App.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        
+        [Authorize(Roles = "UpiManager")]
+        [HttpPost("ForceDumpAll")]
+        public async Task<IActionResult> ForceDump()
+        {
+            try
+            {
+                await _mediator.Send(new DumpClients());
+                
+                
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "manifest error");
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        
+        [Authorize(Roles = "UpiManager")]
+        [HttpPost("ForceDumpSite")]
+        public async Task<IActionResult> ForceDumpSingle([FromBody] SiteDto siteDto)
+        {
+            try
+            {
+                await  _mediator.Send(new DumpClientsBySite(siteDto.SiteCodes));
+                return Ok(siteDto.SiteCodes);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "manifest error");
+                return StatusCode(500, e.Message);
+            }
+        }
 
 
         [HttpGet("Status")]
@@ -121,7 +156,7 @@ namespace Dwapi.Crs.Service.App.Controllers
             {
                 var result = await _mediator.Send(new GetTheReport());
                 if (result.IsSuccess)
-                    return Ok(result.Value.Where(x=>x.IsPending));
+                    return Ok(result.Value.Where(x=>!x.IsReady));
 
                 throw new Exception(result.Error);
             }
