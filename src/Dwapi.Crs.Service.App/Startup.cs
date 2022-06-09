@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Dwapi.Crs.Service.App.Filters;
 using Dwapi.Crs.Service.App.Hubs;
+using Dwapi.Crs.Service.App.Notifications;
 using Dwapi.Crs.Service.Application;
 using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Infrastructure;
@@ -49,7 +51,7 @@ namespace Dwapi.Crs.Service.App
             services.AddControllersWithViews();
             services.AddSignalR();
             services.AddInfrastructure(Configuration);
-            services.AddApplication();
+            services.AddApplication(new List<Assembly>(){typeof(AppNotificationHandler).Assembly});
             services.AddSwaggerGen(c=>
             {
                 c.SwaggerDoc("v1",
@@ -139,7 +141,7 @@ namespace Dwapi.Crs.Service.App
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-                endpoints.MapHub<TransmissionHub>($"/{nameof(TransmissionHub).ToLower()}");
+                endpoints.MapHub<TransmissionHub>($"/hubs/{nameof(TransmissionHub).ToLower()}");
             });
 
             EnsureMigrationOfContext<CrsServiceContext>(serviceProvider);

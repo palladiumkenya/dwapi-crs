@@ -9,6 +9,7 @@ using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Domain.Dtos;
 using Dwapi.Crs.Service.Application.Interfaces;
 using Dwapi.Crs.SharedKernel.Custom;
+using Dwapi.Crs.SharedKernel.Enums;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -34,7 +35,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
         public async Task<int> Generate(IProgress<AppProgress> progress=null)
         {
             var list = new List<RegistryManifest>();
-            var appProgress = AppProgress.New("Generating List...", 0);
+            var appProgress = AppProgress.New(  Area.Generating,"Generating List...", 0);
             if(null!=progress)
                 progress.Report(appProgress);
 
@@ -45,8 +46,11 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
 
                 if (firstTimes.Any())
                 {
+                    int i = 0;
                     foreach (var firstTime in firstTimes)
                     {
+                        i++;
+                        appProgress.Update($"Generating List... {i} of {firstTimes.Count}",i,firstTimes.Count);
                         var man = RegistryManifest.Create(firstTime);
                         list.Add(man);
                     }
@@ -77,7 +81,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
         public async Task<int> Process(IProgress<AppProgress> progress=null)
         {
             
-            var appProgress = AppProgress.New("Processing List...", 0);
+            var appProgress = AppProgress.New(Area.Processing,"Processing List...", 0);
             if(null!=progress)
                 progress.Report(appProgress);
 

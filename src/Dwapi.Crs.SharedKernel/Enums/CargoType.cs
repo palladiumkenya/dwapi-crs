@@ -18,4 +18,11 @@
         MultiFacility,
         Community
     }
+    
+    public enum Area
+    {
+        Generating,
+        Processing,
+        Transmitting
+    }
 }

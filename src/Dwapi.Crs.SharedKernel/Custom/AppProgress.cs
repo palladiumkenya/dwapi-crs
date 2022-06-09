@@ -1,12 +1,17 @@
 ﻿using System;
+using Dwapi.Crs.SharedKernel.Enums;
 using Humanizer;
 
 namespace Dwapi.Crs.SharedKernel.Custom
 {
     public class AppProgress
     {
+        public Area Area { get; private set; }
+        public string AreaName => $"{Area}";
         public string Action { get; private set; }
         public double PercentComplete { get;  private set;}
+
+        public double PercentCompleteInt => (int)PercentComplete;
 
         public string Report => $"{Action} {PercentComplete:F}%";
 
@@ -16,16 +21,17 @@ namespace Dwapi.Crs.SharedKernel.Custom
         private AppProgress()
         {
         }
-        private AppProgress(string action,double percentComplete )
+        private AppProgress(Area area, string action,double percentComplete )
         {
+            Area = area;
             PercentComplete = percentComplete;
             Action = action;
             When=DateTime.Now;
         }
 
-        public static AppProgress New(string action,double percentComplete)
+        public static AppProgress New(Area area,string action,double percentComplete)
         {
-            return new AppProgress(action, percentComplete);
+            return new AppProgress(area,action, percentComplete);
         }
         
         public void Update(string action)

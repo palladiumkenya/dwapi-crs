@@ -10,6 +10,7 @@ using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Events;
 using Dwapi.Crs.Service.Application.Interfaces;
 using Dwapi.Crs.SharedKernel.Custom;
+using Dwapi.Crs.SharedKernel.Enums;
 using MediatR;
 using Serilog;
 
@@ -55,7 +56,7 @@ namespace Dwapi.Crs.Service.Application.Commands
         public async Task<Result> Handle(DumpClients request, CancellationToken cancellationToken)
         {
             
-            var appProgress = AppProgress.New("Transmitting...", 0);
+            var appProgress = AppProgress.New(Area.Transmitting,"Transmitting...", 0);
             _progress.Report(appProgress);
             int i = 0;
             Log.Debug("checking for available manifests");
