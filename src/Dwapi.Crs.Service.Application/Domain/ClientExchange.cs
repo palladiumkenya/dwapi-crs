@@ -41,6 +41,9 @@ namespace Dwapi.Crs.Service.Application.Domain
         public string date_of_next_appointment { get; set; }
         public string last_regimen { get; set; }
         public string last_regimen_line { get; set; }
+        public string current_on_art { get; set; }
+        public string date_of_hiv_diagnosis { get; set; }
+        public string last_viral_load_result { get; set; }
 
         public bool IsValid()
         {

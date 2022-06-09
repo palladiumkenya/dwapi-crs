@@ -39,8 +39,8 @@ namespace Dwapi.Crs.Contracts.Crs
         string date_of_next_appointment { get; set; }
         string last_regimen { get; set; }
         string last_regimen_line { get; set; }
-        
-        // DateTime? DateOfHIVDiagnosis { get; set; }
-        // string LastViralLoadResult { get; set; }
+        string current_on_art { get; set; }
+        string date_of_hiv_diagnosis { get; set; }
+        string last_viral_load_result { get; set; }
     }
 }

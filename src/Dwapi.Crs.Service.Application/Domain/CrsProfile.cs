@@ -8,7 +8,7 @@ namespace Dwapi.Crs.Service.Application.Domain
     public class CrsProfile:Profile
     {
         public CrsProfile()
-        { 
+        {
             CreateMap<ClientRegistry, ClientExchange>()
                 .ForMember(dest => dest.ccc_no, opt => opt.MapFrom(src =>
                     src.CCCNumber))
@@ -61,7 +61,7 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.ward, opt => opt.MapFrom(src =>
                     src.Ward))
                 .ForMember(dest => dest.location, opt => opt.MapFrom(src =>
-                    src.Location))
+                    src.Location.Truncate(59)))
                 .ForMember(dest => dest.village, opt => opt.MapFrom(src =>
                     src.Village.Truncate(59)))
                 .ForMember(dest => dest.landmark, opt => opt.MapFrom(src =>
@@ -83,9 +83,13 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.last_regimen, opt => opt.MapFrom(src =>
                     src.LastRegimen))
                 .ForMember(dest => dest.last_regimen_line, opt => opt.MapFrom(src =>
-                    src.LastRegimenLine));
-            // .ForMember(dest => dest.ccurrent_on_art, opt => opt.MapFrom(src =>
-            //     src.CurrentOnART.ToUpper()));
+                    src.LastRegimenLine))
+                .ForMember(dest => dest.current_on_art, opt => opt.MapFrom(src =>
+                    src.CurrentOnART.ToUpper()))
+                .ForMember(dest => dest.date_of_hiv_diagnosis, opt => opt.MapFrom(src =>
+                    src.DateOfHIVDiagnosis.ToDateFormat()))
+                .ForMember(dest => dest.last_viral_load_result, opt => opt.MapFrom(src =>
+                    src.LastViralLoadResult));
 
             CreateMap<RegistryManifest, ErrorReportDto>();
             CreateMap<TransmissionLog, TransmissionLogDto>();
