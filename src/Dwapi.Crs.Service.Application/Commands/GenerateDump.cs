@@ -48,9 +48,11 @@ namespace Dwapi.Crs.Service.Application.Commands
             {
                 Log.Debug("Generating dump...");
                 var newSites = await _manifestRepository.Generate(progress);
+                
                 Log.Debug("Generating dump completed!");
                 Log.Debug("Generating Processing counts...");
                 await _manifestRepository.Process(progress);
+                
                 Log.Debug("Processing completed!");
                 return Result.Ok();
                 

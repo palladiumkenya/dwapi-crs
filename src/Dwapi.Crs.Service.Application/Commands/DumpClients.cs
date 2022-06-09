@@ -74,6 +74,9 @@ namespace Dwapi.Crs.Service.Application.Commands
                     var pageCount = Pager.PageCount(_crsSettings.Batches, mani.Records.Value);
                     
                     appProgress.Update($"Transmitting {mani.Name}");
+                    _progress.Report(appProgress);
+                    
+                    
 
                     for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)
                     {
