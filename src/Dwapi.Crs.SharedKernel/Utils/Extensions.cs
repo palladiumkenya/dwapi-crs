@@ -41,22 +41,22 @@ namespace Dwapi.Crs.SharedKernel.Utils
             return string.Empty;
         }
         
-        public static string ToStringFormat(this string guid)
+        public static string ToStringFormat(this string value)
         {
-            if (null == guid)
+            if (null == value)
                 return "";
-            if (string.IsNullOrWhiteSpace(guid))
+            if (string.IsNullOrWhiteSpace(value))
                 return "";
             
             return string.Empty;
         }
-        
-        public static string Truncate(this string value, int maxLength)
+
+        public static string Truncate(this string value, int maxLength = 59)
         {
             if (string.IsNullOrEmpty(value)) return value;
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength); 
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
         }
-        
+
         public static string Transfrom(this string value,string category="Marital")
         {
             
@@ -87,6 +87,15 @@ namespace Dwapi.Crs.SharedKernel.Utils
                     return "Unknown";
                 return value;
             }
+            
+            if (category == "Sex")
+            {
+                if (null == value)
+                    return "Male";
+                if (string.IsNullOrWhiteSpace(value))
+                    return "Male";
+                return value;
+            }
 
             
             if (null == value)
@@ -105,6 +114,17 @@ namespace Dwapi.Crs.SharedKernel.Utils
                 nmlist.Add(i.ToLower());
 
             return nmlist.Any(x => nmlist.Contains(value.Trim().ToLower()));
+        }
+
+        public static string ToNumericFormat(this string value)
+        {
+            if (null == value)
+                return "";
+            if (string.IsNullOrWhiteSpace(value))
+                return "";
+            if (int.TryParse(value, out var n))
+                return n.ToString();
+            return string.Empty;
         }
     }
 }

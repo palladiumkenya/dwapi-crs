@@ -27,7 +27,7 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.patient_clinic_no, opt => opt.MapFrom(src =>
                     src.PatientClinicNumber))
                 .ForMember(dest => dest.first_name, opt => opt.MapFrom(src =>
-                    src.FirstName.ToLower()))
+                    src.FirstName.Transfrom("Name").ToUpper()))
                 .ForMember(dest => dest.middle_name, opt => opt.MapFrom(src =>
                     src.MiddleName.ToUpper()))
                 .ForMember(dest => dest.last_name, opt => opt.MapFrom(src =>
@@ -35,7 +35,7 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.date_of_birth, opt => opt.MapFrom(src =>
                     src.DateOfBirth.ToDateFormat()))
                 .ForMember(dest => dest.sex, opt => opt.MapFrom(src =>
-                    src.Sex))
+                    src.Sex.Transfrom("Sex")))
                 .ForMember(dest => dest.marital_status, opt => opt.MapFrom(src =>
                     src.MaritalStatus.Transfrom("Marital")))
                 .ForMember(dest => dest.occupation, opt => opt.MapFrom(src =>
@@ -43,17 +43,17 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.education_level, opt => opt.MapFrom(src =>
                     src.HighestLevelOfEducation))
                 .ForMember(dest => dest.phone_number, opt => opt.MapFrom(src =>
-                    src.PhoneNumber))
+                    src.PhoneNumber.ToNumericFormat()))
                 .ForMember(dest => dest.alt_phone_number, opt => opt.MapFrom(src =>
-                    src.AlternativePhoneNumber))
+                    src.AlternativePhoneNumber.ToNumericFormat()))
                 .ForMember(dest => dest.spouse_phone_number, opt => opt.MapFrom(src =>
-                    src.SpousePhoneNumber))
+                    src.SpousePhoneNumber.ToNumericFormat()))
                 .ForMember(dest => dest.next_of_kin_name, opt => opt.MapFrom(src =>
                     src.NameOfNextOfKin.ToUpper()))
                 .ForMember(dest => dest.next_of_kin_relationship, opt => opt.MapFrom(src =>
                     src.NextOfKinRelationship.ToUpper()))
                 .ForMember(dest => dest.next_of_kin_phone_number, opt => opt.MapFrom(src =>
-                    src.NextOfKinTelNo))
+                    src.NextOfKinTelNo.ToNumericFormat()))
                 .ForMember(dest => dest.county, opt => opt.MapFrom(src =>
                     src.County))
                 .ForMember(dest => dest.subcounty, opt => opt.MapFrom(src =>
@@ -67,7 +67,7 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.landmark, opt => opt.MapFrom(src =>
                     src.Landmark.Truncate(59)))
                 .ForMember(dest => dest.facility_name, opt => opt.MapFrom(src =>
-                    src.FacilityName))
+                    src.FacilityName.Truncate(59)))
                 .ForMember(dest => dest.facility_mfl, opt => opt.MapFrom(src =>
                     src.MFLCode))
                 .ForMember(dest => dest.date_of_initiation, opt => opt.MapFrom(src =>
