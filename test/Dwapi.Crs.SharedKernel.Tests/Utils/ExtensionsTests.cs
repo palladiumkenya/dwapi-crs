@@ -27,6 +27,8 @@ namespace Dwapi.Crs.SharedKernel.Tests.TestData.Utils
         [TestCase("Marital","Unknown","Unknown")]
         [TestCase("Name"," ","Unknown")]
         [TestCase("Name",null,"Unknown")]
+        [TestCase("Name","","Unknown")]
+        [TestCase("Name","Jina","Jina")]
         [TestCase("Sex"," ","Male")]
         [TestCase("Sex",null,"Male")]
         [TestCase("Sex","Female","Female")]

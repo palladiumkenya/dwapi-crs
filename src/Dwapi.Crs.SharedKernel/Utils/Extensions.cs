@@ -72,6 +72,8 @@ namespace Dwapi.Crs.SharedKernel.Utils
                     return "Unknown";
                 if (string.IsNullOrWhiteSpace(value))
                     return "Unknown";
+                if (string.IsNullOrEmpty(value))
+                    return "Unknown";
                 if (value == "Unkown")
                     return "Unknown";
                 if (!value.IsInOptions(opts.ToList()))
@@ -85,6 +87,8 @@ namespace Dwapi.Crs.SharedKernel.Utils
                     return "Unknown";
                 if (string.IsNullOrWhiteSpace(value))
                     return "Unknown";
+                if (string.IsNullOrEmpty(value))
+                    return "Unknown";
                 return value;
             }
             
@@ -94,6 +98,8 @@ namespace Dwapi.Crs.SharedKernel.Utils
                     return "Male";
                 if (string.IsNullOrWhiteSpace(value))
                     return "Male";
+                if (string.IsNullOrEmpty(value))
+                    return "Male";
                 return value;
             }
 
@@ -101,6 +107,8 @@ namespace Dwapi.Crs.SharedKernel.Utils
             if (null == value)
                 return "";
             if (string.IsNullOrWhiteSpace(value))
+                return "";
+            if (string.IsNullOrEmpty(value))
                 return "";
             
             return string.Empty;
