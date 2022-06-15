@@ -1,6 +1,7 @@
 using AutoMapper;
 using Dwapi.Crs.Core.Domain;
 using Dwapi.Crs.Service.Application.Domain.Dtos;
+using Dwapi.Crs.Service.Application.Domain.Resolvers;
 using Dwapi.Crs.SharedKernel.Utils;
 
 namespace Dwapi.Crs.Service.Application.Domain
@@ -26,18 +27,14 @@ namespace Dwapi.Crs.Service.Application.Domain
                     src.DrivingLicenseNumber))
                 .ForMember(dest => dest.patient_clinic_no, opt => opt.MapFrom(src =>
                     src.PatientClinicNumber))
-                .ForMember(dest => dest.first_name, opt => opt.MapFrom(src =>
-                    src.FirstName.Transfrom("Name").ToUpper()))
+                .ForMember(dest => dest.first_name, opt => opt.MapFrom<NameResolver>())
                 .ForMember(dest => dest.middle_name, opt => opt.MapFrom(src =>
                     src.MiddleName.ToUpper()))
-                .ForMember(dest => dest.last_name, opt => opt.MapFrom(src =>
-                    src.LastName.Transfrom("Name").ToUpper()))
+                .ForMember(dest => dest.last_name, opt => opt.MapFrom<NameResolver>())
                 .ForMember(dest => dest.date_of_birth, opt => opt.MapFrom(src =>
                     src.DateOfBirth.ToDateFormat()))
-                .ForMember(dest => dest.sex, opt => opt.MapFrom(src =>
-                    src.Sex.Transfrom("Sex")))
-                .ForMember(dest => dest.marital_status, opt => opt.MapFrom(src =>
-                    src.MaritalStatus.Transfrom("Marital")))
+                .ForMember(dest => dest.sex, opt => opt.MapFrom<SexResolver>())
+                .ForMember(dest => dest.marital_status, opt => opt.MapFrom<MaritalResolver>())
                 .ForMember(dest => dest.occupation, opt => opt.MapFrom(src =>
                     src.Occupation))
                 .ForMember(dest => dest.education_level, opt => opt.MapFrom(src =>

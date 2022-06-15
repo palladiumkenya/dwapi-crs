@@ -4,5 +4,7 @@ namespace Dwapi.Crs.Service.Application.Domain
     {
         Pending,
         Transmitted,
+        New,
+        Failed
     }
 }

@@ -146,7 +146,41 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
                 
             return Task.FromResult(ls);
         }
-        
+
+        public Task<List<RegistryManifest>> GetNewForSending(int[] siteCode = null)
+        {
+            if (null != siteCode)
+            {
+                var list = _context.RegistryManifests.AsNoTracking().ToList()
+                    .Where(x => x.CanBeSentNewOnly && siteCode.Contains(x.SiteCode))
+                    .ToList();
+                return Task.FromResult(list);
+            }
+
+            var ls = _context.RegistryManifests.AsNoTracking().ToList()
+                .Where(x => x.CanBeSentNewOnly)
+                .ToList();
+                
+            return Task.FromResult(ls);
+        }
+
+        public Task<List<RegistryManifest>> GetFailedForSending(int[] siteCode = null)
+        {
+            if (null != siteCode)
+            {
+                var list = _context.RegistryManifests.AsNoTracking().ToList()
+                    .Where(x => x.CanBeSentFailed && siteCode.Contains(x.SiteCode))
+                    .ToList();
+                return Task.FromResult(list);
+            }
+
+            var ls = _context.RegistryManifests.AsNoTracking().ToList()
+                .Where(x => x.CanBeSentFailed)
+                .ToList();
+                
+            return Task.FromResult(ls);
+        }
+
         private Task<List<RegistryManifest>> GetNewReadyForSending(int [] siteCode=null)
         {
     

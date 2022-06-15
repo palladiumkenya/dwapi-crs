@@ -17,6 +17,10 @@ namespace Dwapi.Crs.Service.Application.Domain
         public ICollection<TransmissionLog> TransmissionLogs { get; set; } = new List<TransmissionLog>();
 
         public bool CanBeSent => CheckReadiness();
+        
+        public bool CanBeSentNewOnly => CheckNewness();
+        
+        public bool CanBeSentFailed => CheckFailures();
 
         private bool CheckReadiness()
         {
@@ -28,7 +32,23 @@ namespace Dwapi.Crs.Service.Application.Domain
 
             return false;
         }
+        
+        private bool CheckFailures()
+        {
+            if (TransmissionLogs.Any(x => x.Response == Response.Failed))
+                return true;
+            
+            return false;
+        }
 
+        private bool CheckNewness()
+        {
+            if (!TransmissionLogs.Any())
+                return true;
+
+            return false;
+        }
+        
         private RegistryManifest()
         {
         }
