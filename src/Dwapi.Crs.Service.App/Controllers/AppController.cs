@@ -6,6 +6,7 @@ using Dwapi.Crs.Core.Domain.Dto;
 using Dwapi.Crs.Core.Interfaces.Repository;
 using Dwapi.Crs.Core.Interfaces.Service;
 using Dwapi.Crs.Service.Application.Commands;
+using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Queries;
 using Hangfire;
 using MediatR;
@@ -136,7 +137,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new GetTheReport());
+                var result = await _mediator.Send(new GetTheReport(ReportState.Transmitted));
                 if (result.IsSuccess)
                     return Ok(result.Value);
 
@@ -154,7 +155,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new GetTheReport());
+                var result = await _mediator.Send(new GetTheReport(ReportState.Pending));
                 if (result.IsSuccess)
                     return Ok(result.Value.Where(x=>x.IsReady));
 
@@ -172,7 +173,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new GetTheReport());
+                var result = await _mediator.Send(new GetTheReport(ReportState.Transmitted));
                 if (result.IsSuccess)
                     return Ok(result.Value.Where(x=>x.IsTransmitted));
 
