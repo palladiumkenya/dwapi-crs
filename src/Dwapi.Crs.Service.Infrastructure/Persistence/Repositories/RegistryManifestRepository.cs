@@ -168,13 +168,13 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
         {
             if (null != siteCode)
             {
-                var list = _context.RegistryManifests.AsNoTracking().ToList()
+                var list = _context.RegistryManifests.Include(x=>x.TransmissionLogs).AsNoTracking().ToList()
                     .Where(x => x.CanBeSentFailed && siteCode.Contains(x.SiteCode))
                     .ToList();
                 return Task.FromResult(list);
             }
 
-            var ls = _context.RegistryManifests.AsNoTracking().ToList()
+            var ls = _context.RegistryManifests.Include(x=>x.TransmissionLogs).AsNoTracking().ToList()
                 .Where(x => x.CanBeSentFailed)
                 .ToList();
                 

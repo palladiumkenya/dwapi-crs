@@ -60,7 +60,7 @@ namespace Dwapi.Crs.Service.Application.Commands
 
         public async Task<Result> Handle(DumpFailedClientsBySite request, CancellationToken cancellationToken)
         {
-            var appProgress = AppProgress.New(Area.Transmitting,"Transmitting...", 0);
+            var appProgress = AppProgress.New(Area.ReTransmitting,"Re-Transmitting...", 0);
             _progress.Report(appProgress);
             int i = 0;
             Log.Debug("checking for available manifests");
@@ -73,22 +73,22 @@ namespace Dwapi.Crs.Service.Application.Commands
                 {
                     i++;
                     // clear transmission Log
-                    // await _transmissionLogRepository.Clear(mani.Id);
+                    await _transmissionLogRepository.Clear(mani.Id);
                     
                     var pageCount = Pager.PageCount(_crsSettings.Batches, mani.Records.Value);
                     
-                    appProgress.Update($"Transmitting {mani.Name}");
+                    appProgress.Update($"Re-Transmitting {mani.Name}");
 
                     for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)
                     {
                         _progress.Report(appProgress);
-                        Log.Debug($"Transmitting {mani.Name} {pageNumber} of {pageCount}");
+                        Log.Debug($"Re-Transmitting {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
                         var dtos = _mapper.Map<List<ClientExchange>>(clients);
                         dtos = dtos.Where(x => x.IsValid()).ToList();
                         var res = await _crsDumpService.Dump(dtos);
                         
-                        appProgress.Update($"Transmitting {mani.Name} Page:{pageNumber}/{pageCount}",i,manis.Count);
+                        appProgress.Update($"Re-Transmitting {mani.Name} Page:{pageNumber}/{pageCount}",i,manis.Count);
                         _progress.Report(appProgress);
                         
                         var responseInfo = $"Page:{pageNumber}/{pageCount}, Clients:{dtos.Count}, Response:{res.Response}";
@@ -107,7 +107,7 @@ namespace Dwapi.Crs.Service.Application.Commands
                 Log.Debug("NO manifests found");
             }
             
-            appProgress.UpdateDone($"Transmitting {i} of {manis.Count} Site Manifests Done!");
+            appProgress.UpdateDone($"Re-Transmitting {i} of {manis.Count} Site Manifests Done!");
             _progress.Report(appProgress);
 
             return Result.Ok();

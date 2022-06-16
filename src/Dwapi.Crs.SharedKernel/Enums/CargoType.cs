@@ -23,6 +23,7 @@
     {
         Generating,
         Processing,
-        Transmitting
+        Transmitting,
+        ReTransmitting
     }
 }
