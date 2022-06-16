@@ -16,16 +16,18 @@ using Serilog;
 
 namespace Dwapi.Crs.Service.Application.Commands
 {
-   public class DumpNewClients:IRequest<Result>
+    public class DumpFailedClientsBySite : IRequest<Result>
     {
+        public int[] SiteCodes { get; }
         public bool Force  { get; }
 
-        public DumpNewClients(bool force=false)
+        public DumpFailedClientsBySite(int[] siteCodes,bool force=false)
         {
-            Force = force;
+            SiteCodes = siteCodes.Distinct().ToArray();
         }
     }
-    public class DumpNewClientsHandler:IRequestHandler<DumpNewClients,Result>
+
+    public class DumpFailedClientsBySiteHandler:IRequestHandler<DumpFailedClientsBySite,Result>
     {
         private readonly IMediator _mediator;
         private readonly CrsSettings _crsSettings;
@@ -35,7 +37,10 @@ namespace Dwapi.Crs.Service.Application.Commands
         private readonly IClientRepository _clientRepository;
         private readonly ITransmissionLogRepository _transmissionLogRepository;
         private readonly IProgress<AppProgress> _progress;
-        public DumpNewClientsHandler(IMediator mediator,CrsSettings crsSettings, IMapper mapper, ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository, IClientRepository clientRepository, ITransmissionLogRepository transmissionLogRepository)
+
+        public DumpFailedClientsBySiteHandler(IMediator mediator, CrsSettings crsSettings, IMapper mapper,
+            ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository,
+            IClientRepository clientRepository, ITransmissionLogRepository transmissionLogRepository)
         {
             _mediator = mediator;
             _crsSettings = crsSettings;
@@ -53,18 +58,17 @@ namespace Dwapi.Crs.Service.Application.Commands
             _progress = progress;
         }
 
-        public async Task<Result> Handle(DumpNewClients request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DumpFailedClientsBySite request, CancellationToken cancellationToken)
         {
-            
             var appProgress = AppProgress.New(Area.Transmitting,"Transmitting...", 0);
             _progress.Report(appProgress);
             int i = 0;
             Log.Debug("checking for available manifests");
-            var manis =await  _manifestRepository.GetNewForSending();
+            var manis =await  _manifestRepository.GetFailedForSending(request.SiteCodes);
             if (manis.Any())
             {
                 Log.Debug($"{manis.Count} Manifests Available");
-              
+                
                 foreach (var mani in manis)
                 {
                     i++;
@@ -74,33 +78,29 @@ namespace Dwapi.Crs.Service.Application.Commands
                     var pageCount = Pager.PageCount(_crsSettings.Batches, mani.Records.Value);
                     
                     appProgress.Update($"Transmitting {mani.Name}");
-                    _progress.Report(appProgress);
-                    
-                    
 
                     for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)
                     {
-                       
                         _progress.Report(appProgress);
-                        Log.Debug($"Transmitting {mani.Name} Page:{pageNumber}/{pageCount}");
+                        Log.Debug($"Transmitting {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
                         var dtos = _mapper.Map<List<ClientExchange>>(clients);
                         dtos = dtos.Where(x => x.IsValid()).ToList();
-                        var res=await _crsDumpService.Dump(dtos);
+                        var res = await _crsDumpService.Dump(dtos);
                         
-                    
                         appProgress.Update($"Transmitting {mani.Name} Page:{pageNumber}/{pageCount}",i,manis.Count);
                         _progress.Report(appProgress);
                         
                         var responseInfo = $"Page:{pageNumber}/{pageCount}, Clients:{dtos.Count}, Response:{res.Response}";
                         await _mediator.Publish(new SiteDumped(mani.Id,res.StatusCode,responseInfo));
                         
-                        Log.Debug(new string('-',50));
+                        Log.Debug(new string('-', 50));
                         Log.Debug(res.Response);
-                        Log.Debug(new string('^',50));
+                        Log.Debug(new string('^', 50));
                         Log.Debug($"SENT {mani.Name} [{pageNumber} of {pageCount}]");
                     }
                 }
+                
             }
             else
             {
@@ -109,7 +109,7 @@ namespace Dwapi.Crs.Service.Application.Commands
             
             appProgress.UpdateDone($"Transmitting {i} of {manis.Count} Site Manifests Done!");
             _progress.Report(appProgress);
-            
+
             return Result.Ok();
         }
     }

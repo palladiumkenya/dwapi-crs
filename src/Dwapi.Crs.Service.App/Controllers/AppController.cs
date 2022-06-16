@@ -109,6 +109,42 @@ namespace Dwapi.Crs.Service.App.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        
+        
+        [Authorize(Roles = "UpiManager")]
+        [HttpPost("DumpFailed")]
+        public async Task<IActionResult> DumpFailed()
+        {
+            try
+            {
+                await _mediator.Send(new DumpFailedClients());
+                
+                
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "manifest error");
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        
+        [Authorize(Roles = "UpiManager")]
+        [HttpPost("DumpFailedSite")]
+        public async Task<IActionResult> DumpFailedSite([FromBody] SiteDto siteDto)
+        {
+            try
+            {
+                await  _mediator.Send(new DumpFailedClientsBySite(siteDto.SiteCodes));
+                return Ok(siteDto.SiteCodes);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "manifest error");
+                return StatusCode(500, e.Message);
+            }
+        }
 
 
         [HttpGet("Status")]
@@ -176,6 +212,24 @@ namespace Dwapi.Crs.Service.App.Controllers
                 var result = await _mediator.Send(new GetTheReport(ReportState.Transmitted));
                 if (result.IsSuccess)
                     return Ok(result.Value.Where(x=>x.IsTransmitted));
+
+                throw new Exception(result.Error);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "report error");
+                return StatusCode(500, e.Message);
+            }
+        }
+        
+        [HttpGet("FailedReport")]
+        public async Task<IActionResult> FailedReport()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetTheReport(ReportState.Failed));
+                if (result.IsSuccess)
+                    return Ok(result.Value);
 
                 throw new Exception(result.Error);
             }

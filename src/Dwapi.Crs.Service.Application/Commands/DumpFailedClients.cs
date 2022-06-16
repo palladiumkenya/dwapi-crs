@@ -16,16 +16,16 @@ using Serilog;
 
 namespace Dwapi.Crs.Service.Application.Commands
 {
-   public class DumpNewClients:IRequest<Result>
+   public class DumpFailedClients:IRequest<Result>
     {
         public bool Force  { get; }
 
-        public DumpNewClients(bool force=false)
+        public DumpFailedClients(bool force=false)
         {
             Force = force;
         }
     }
-    public class DumpNewClientsHandler:IRequestHandler<DumpNewClients,Result>
+    public class DumpFailedClientsHandler:IRequestHandler<DumpFailedClients,Result>
     {
         private readonly IMediator _mediator;
         private readonly CrsSettings _crsSettings;
@@ -35,7 +35,7 @@ namespace Dwapi.Crs.Service.Application.Commands
         private readonly IClientRepository _clientRepository;
         private readonly ITransmissionLogRepository _transmissionLogRepository;
         private readonly IProgress<AppProgress> _progress;
-        public DumpNewClientsHandler(IMediator mediator,CrsSettings crsSettings, IMapper mapper, ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository, IClientRepository clientRepository, ITransmissionLogRepository transmissionLogRepository)
+        public DumpFailedClientsHandler(IMediator mediator,CrsSettings crsSettings, IMapper mapper, ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository, IClientRepository clientRepository, ITransmissionLogRepository transmissionLogRepository)
         {
             _mediator = mediator;
             _crsSettings = crsSettings;
@@ -53,14 +53,14 @@ namespace Dwapi.Crs.Service.Application.Commands
             _progress = progress;
         }
 
-        public async Task<Result> Handle(DumpNewClients request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DumpFailedClients request, CancellationToken cancellationToken)
         {
             
             var appProgress = AppProgress.New(Area.Transmitting,"Transmitting...", 0);
             _progress.Report(appProgress);
             int i = 0;
             Log.Debug("checking for available manifests");
-            var manis =await  _manifestRepository.GetNewForSending();
+            var manis =await  _manifestRepository.GetFailedForSending();
             if (manis.Any())
             {
                 Log.Debug($"{manis.Count} Manifests Available");

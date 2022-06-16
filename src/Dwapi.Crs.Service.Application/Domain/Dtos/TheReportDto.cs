@@ -22,6 +22,8 @@ namespace Dwapi.Crs.Service.Application.Domain.Dtos
         public bool IsReady => ResponseStatus == Response.Ready;
         public bool IsTransmitted => Status != "Pending";
         public bool IsAlreadySent => RegistryManifestId.HasValue;
+        
+        public bool IsFailed => ResponseStatus == Response.Failed;
         public string ArrivedAgo => DateArrived.Humanize(false);
         public string ResponseAgo => ResponseStatusDate.HasValue ? ResponseStatusDate.Humanize(false) : "";
 

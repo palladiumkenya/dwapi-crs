@@ -46,6 +46,11 @@ namespace Dwapi.Crs.Service.Application.Queries
                     var alreadySentSiteCodes = report.Where(x => x.IsAlreadySent).Select(s => s.SiteCode).ToList();
                     report = report.Where(x => !alreadySentSiteCodes.Contains(x.SiteCode)).ToList();
                 }
+                
+                if (request.State == ReportState.Failed)
+                {
+                    report = report.Where(x => x.IsFailed).ToList();
+                }
 
                 return Result.Ok(report);
             }
