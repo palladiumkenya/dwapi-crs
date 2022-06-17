@@ -58,9 +58,9 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.county, opt => opt.MapFrom(src =>
                     src.County))
                 .ForMember(dest => dest.subcounty, opt => opt.MapFrom(src =>
-                    src.SubCounty))
+                    src.SubCounty.Truncate(59)))
                 .ForMember(dest => dest.ward, opt => opt.MapFrom(src =>
-                    src.Ward))
+                    src.Ward.Truncate(59)))
                 .ForMember(dest => dest.location, opt => opt.MapFrom(src =>
                     src.Location.Truncate(59)))
                 .ForMember(dest => dest.village, opt => opt.MapFrom(src =>
