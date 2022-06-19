@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Dwapi.Crs.Service.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +30,7 @@ namespace Dwapi.Crs.Service.Application.Tests
 
             var services = new ServiceCollection();
             services.AddInfrastructure(config);
-            services.AddApplication();
+            services.AddApplication(new List<Assembly>(){typeof(TestAppProgressReportedHandler).Assembly});
             ServiceProvider = services.BuildServiceProvider();
             
             InitDB();

@@ -16,18 +16,18 @@ using Serilog;
 
 namespace Dwapi.Crs.Service.Application.Commands
 {
-    public class DumpClientsBySite : IRequest<Result>
+    public class DumpNewClientsBySite : IRequest<Result>
     {
         public int[] SiteCodes { get; }
         public bool Force  { get; }
 
-        public DumpClientsBySite(int[] siteCodes,bool force=false)
+        public DumpNewClientsBySite(int[] siteCodes,bool force=false)
         {
             SiteCodes = siteCodes.Distinct().ToArray();
         }
     }
 
-    public class DumpClientsBySiteHandler:IRequestHandler<DumpClientsBySite,Result>
+    public class DumpNewClientsBySiteHandler:IRequestHandler<DumpNewClientsBySite,Result>
     {
         private readonly IMediator _mediator;
         private readonly CrsSettings _crsSettings;
@@ -38,7 +38,7 @@ namespace Dwapi.Crs.Service.Application.Commands
         private readonly ITransmissionLogRepository _transmissionLogRepository;
         private readonly IProgress<AppProgress> _progress;
 
-        public DumpClientsBySiteHandler(IMediator mediator, CrsSettings crsSettings, IMapper mapper,
+        public DumpNewClientsBySiteHandler(IMediator mediator, CrsSettings crsSettings, IMapper mapper,
             ICrsDumpService crsDumpService, IRegistryManifestRepository manifestRepository,
             IClientRepository clientRepository, ITransmissionLogRepository transmissionLogRepository)
         {
@@ -58,13 +58,13 @@ namespace Dwapi.Crs.Service.Application.Commands
             _progress = progress;
         }
 
-        public async Task<Result> Handle(DumpClientsBySite request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DumpNewClientsBySite request, CancellationToken cancellationToken)
         {
             var appProgress = AppProgress.New(Area.Transmitting,"Transmitting...", 0);
             _progress.Report(appProgress);
             int i = 0;
             Log.Debug("checking for available manifests");
-            var manis =await  _manifestRepository.GetReadyForSending(!request.Force, request.SiteCodes);
+            var manis =await  _manifestRepository.GetNewForSending(request.SiteCodes);
             if (manis.Any())
             {
                 Log.Debug($"{manis.Count} Manifests Available");
@@ -81,9 +81,7 @@ namespace Dwapi.Crs.Service.Application.Commands
 
                     for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)
                     {
-                        appProgress.Update($"Transmitting {mani.Name} Page:{pageNumber}/{pageCount}...");
                         _progress.Report(appProgress);
-                        
                         Log.Debug($"Transmitting {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
                         var dtos = _mapper.Map<List<ClientExchange>>(clients);

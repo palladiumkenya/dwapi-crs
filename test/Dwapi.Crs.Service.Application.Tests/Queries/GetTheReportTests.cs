@@ -1,3 +1,4 @@
+using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -21,7 +22,7 @@ namespace Dwapi.Crs.Service.Application.Tests.Queries
         [Test]
         public void should_Generate()
         {
-            var res = _mediator.Send(new GetTheReport()).Result;
+            var res = _mediator.Send(new GetTheReport(ReportState.Transmitted)).Result;
             Assert.True(res.IsSuccess);
             Assert.True(res.Value.Any());
             foreach (var reportDto in res.Value)

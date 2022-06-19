@@ -418,3 +418,5 @@ Thumbs.db
 /obj
 /logs
 /src/Dwapi.Crs/logs/
+/src/Dwapi.Crs/appsettings.Development.json
+/src/Dwapi.Crs.Service.App/appsettings.Development.json
