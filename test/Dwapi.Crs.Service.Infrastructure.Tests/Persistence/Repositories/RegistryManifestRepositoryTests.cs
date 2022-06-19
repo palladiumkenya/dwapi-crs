@@ -28,16 +28,16 @@ namespace Dwapi.Crs.Service.Infrastructure.Tests.Persistence.Repositories
         public void should_Generate()
         {
             var res = _manifestRepository.Generate().Result;
-            Assert.True(res);
+            Assert.True(res>0);
         }
-        
+
         [Test]
         public void should_Process()
         {
             var res = _manifestRepository.Process().Result;
-            Assert.True(res);
+            Assert.True(res > 0);
         }
-        
+
         [Test]
         public void should_Get_Ready_Upload()
         {
@@ -48,7 +48,7 @@ namespace Dwapi.Crs.Service.Infrastructure.Tests.Persistence.Repositories
         [Test]
         public void should_Get_Ready_Upload_Sites()
         {
-            var manifests = _manifestRepository.GetReadyForSending(new []{13075}).Result;
+            var manifests = _manifestRepository.GetReadyForSending(false,new []{13075}).Result;
             Assert.True(manifests.Any());
         }
 

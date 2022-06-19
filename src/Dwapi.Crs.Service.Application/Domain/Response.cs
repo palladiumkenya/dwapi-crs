@@ -2,7 +2,7 @@ namespace Dwapi.Crs.Service.Application.Domain
 {
     public enum Response
     {
-        Sending,
+        Ready,
         Failed,
         Sent
     }

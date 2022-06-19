@@ -32,6 +32,8 @@ namespace Dwapi.Crs.Service.Infrastructure
             
             DapperPlusManager.Entity<RegistryManifest>().Key(x => x.Id).Table($"{nameof(RegistryManifests)}");
             DapperPlusManager.Entity<TransmissionLog>().Key(x => x.Id).Table($"{nameof(TransmissionLogs)}");
+            
+            DapperPlusManager.Entity<ClientRegistry>().Key(x => x.Id).Table($"{nameof(ClientRegistries)}");
         }
 
         public override void EnsureSeeded()
