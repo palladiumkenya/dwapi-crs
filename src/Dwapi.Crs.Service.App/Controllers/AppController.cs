@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Dwapi.Crs.Core.Command;
-using Dwapi.Crs.Core.Domain.Dto;
-using Dwapi.Crs.Core.Interfaces.Repository;
-using Dwapi.Crs.Core.Interfaces.Service;
 using Dwapi.Crs.Service.Application.Commands;
 using Dwapi.Crs.Service.Application.Domain;
+using Dwapi.Crs.Service.Application.Domain.Dtos;
 using Dwapi.Crs.Service.Application.Queries;
-using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -254,6 +250,42 @@ namespace Dwapi.Crs.Service.App.Controllers
             catch (Exception e)
             {
                 Log.Error(e, "report error");
+                return StatusCode(500, e.Message);
+            }
+        }
+        
+             
+        [HttpGet("DuplicateSummary")]
+        public async Task<IActionResult> DuplicateSummary()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetDuplicateSummary());
+                if (result.IsSuccess)
+                    return Ok(result.Value);
+
+                throw new Exception(result.Error);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "report error");
+                return StatusCode(500, e.Message);
+            }
+        }
+        
+         
+        [Authorize(Roles = "UpiManager")]
+        [HttpPost("DeDuplicateSite")]
+        public async Task<IActionResult> DeDuplicateSite([FromBody] SiteDto site)
+        {
+            try
+            {
+                await _mediator.Send(new DeduplicateSite(site.Sites.ToList()));
+                return Ok(site.Sites.Select(x=>x.SiteCode).ToList());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "manifest error");
                 return StatusCode(500, e.Message);
             }
         }

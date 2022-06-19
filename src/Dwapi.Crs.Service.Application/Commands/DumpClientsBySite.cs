@@ -81,7 +81,9 @@ namespace Dwapi.Crs.Service.Application.Commands
 
                     for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)
                     {
+                        appProgress.Update($"Transmitting {mani.Name} Page:{pageNumber}/{pageCount}...");
                         _progress.Report(appProgress);
+                        
                         Log.Debug($"Transmitting {mani.Name} {pageNumber} of {pageCount}");
                         var clients = _clientRepository.Load(pageNumber, _crsSettings.Batches, mani.FacilityId);
                         var dtos = _mapper.Map<List<ClientExchange>>(clients);

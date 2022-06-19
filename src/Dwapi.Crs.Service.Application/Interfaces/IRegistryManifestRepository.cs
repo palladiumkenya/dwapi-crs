@@ -13,6 +13,7 @@ namespace Dwapi.Crs.Service.Application.Interfaces
         Task<List<Manifest>> GetFirstTimers();
         Task<int> Generate(IProgress<AppProgress> progress = null);
         Task<int> Process(IProgress<AppProgress> progress = null);
+        Task<int> ReProcess(int siteCode,IProgress<AppProgress> progress = null);
         Task<List<RegistryManifest>> GetReadyForSending(bool newOnly = true, int[] siteCode = null);
         Task<List<RegistryManifest>> GetNewForSending(int[] siteCode = null);
         Task<List<RegistryManifest>> GetFailedForSending(int[] siteCode = null);

@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using RestSharp;
 using RestSharp.Authenticators;
+using Serilog;
+using Z.Dapper.Plus;
 
 namespace Dwapi.Crs.Service.Infrastructure
 {
@@ -78,6 +80,20 @@ namespace Dwapi.Crs.Service.Infrastructure
             services.AddScoped<IRegistryManifestRepository, RegistryManifestRepository>();
             services.AddScoped<ITransmissionLogRepository, TransmissionLogRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
+            
+            try
+            {
+                DapperPlusManager.AddLicense("1755;700-ThePalladiumGroup", "218460a6-02d0-c26b-9add-e6b8d13ccbf4");
+                if (!DapperPlusManager.ValidateLicense(out var licenseErrorMessage))
+                {
+                    throw new Exception(licenseErrorMessage);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug($"{e}");
+                throw;
+            }
 
             return services;
         }
