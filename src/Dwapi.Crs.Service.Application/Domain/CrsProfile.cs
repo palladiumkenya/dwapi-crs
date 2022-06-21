@@ -50,13 +50,13 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.spouse_phone_number, opt => opt.ConvertUsing(new PhoneConverter(), src =>
                     src.SpousePhoneNumber))
                 .ForMember(dest => dest.next_of_kin_name, opt => opt.MapFrom(src =>
-                    src.NameOfNextOfKin.ToUpper()))
+                    src.NameOfNextOfKin.Truncate(59).ToUpper()))
                 .ForMember(dest => dest.next_of_kin_relationship, opt => opt.MapFrom(src =>
                     src.NextOfKinRelationship.ToUpper()))
                 .ForMember(dest => dest.next_of_kin_phone_number, opt => opt.ConvertUsing(new PhoneConverter(), src =>
                     src.NextOfKinTelNo))
                 .ForMember(dest => dest.county, opt => opt.MapFrom(src =>
-                    src.County))
+                    src.County.Truncate(59)))
                 .ForMember(dest => dest.subcounty, opt => opt.MapFrom(src =>
                     src.SubCounty.Truncate(59)))
                 .ForMember(dest => dest.ward, opt => opt.MapFrom(src =>
