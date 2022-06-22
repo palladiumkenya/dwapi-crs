@@ -20,7 +20,8 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
     public class RegistryManifestRepository : IRegistryManifestRepository
     {
         private readonly CrsServiceContext _context;
-        
+        private IRegistryManifestRepository _registryManifestRepositoryImplementation;
+
         public RegistryManifestRepository(CrsServiceContext context)
         {
             _context = context;
@@ -127,6 +128,55 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
             }
         }
 
+        public async Task<int> ReProcess(int siteCode,IProgress<AppProgress> progress = null)
+        {
+            var appProgress = AppProgress.New(Area.ReProcessing,$"Re-Processing {siteCode}...", 0);
+            if(null!=progress)
+                progress.Report(appProgress);
+
+            try
+            {
+
+                var manis = _context.RegistryManifests
+                    .Where(x => x.SiteCode==siteCode)
+                    .ToList();
+                int i = 0;
+                foreach (var mani in manis)
+                {
+                    var count = _context.ClientRegistries.LongCount(x => x.FacilityId == mani.FacilityId);
+                    mani.UpdateRecords(count);
+                    var activeCount = _context.ClientRegistries.LongCount(x =>
+                        x.FacilityId == mani.FacilityId &&
+                        (x.CurrentOnART.ToLower() == "yes" || x.CurrentOnART.ToLower() == "y"));
+                    mani.UpdateActiveRecords(activeCount);
+                    _context.Update(mani);
+                    await _context.SaveChangesAsync();
+                    i++;
+                    
+                    appProgress.Update($"Re-Processing {siteCode}...",i,manis.Count);
+                    if(null!=progress)
+                        progress.Report(appProgress);
+                   
+                    Log.Debug(appProgress.Report);
+                }
+                
+                
+                appProgress.Update($"Re-Processing {siteCode}... Done!",i,manis.Count);
+                if(null!=progress)
+                    progress.Report(appProgress);
+                
+                Log.Debug(appProgress.Report);
+
+                return i;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Generate error");
+                throw;
+            }
+        }
+
+
         public Task<List<RegistryManifest>> GetReadyForSending(bool newOnly=true,int [] siteCode=null)
         {
             if (newOnly)
@@ -146,7 +196,41 @@ namespace Dwapi.Crs.Service.Infrastructure.Repositories
                 
             return Task.FromResult(ls);
         }
-        
+
+        public Task<List<RegistryManifest>> GetNewForSending(int[] siteCode = null)
+        {
+            if (null != siteCode)
+            {
+                var list = _context.RegistryManifests.AsNoTracking().ToList()
+                    .Where(x => x.CanBeSentNewOnly && siteCode.Contains(x.SiteCode))
+                    .ToList();
+                return Task.FromResult(list);
+            }
+
+            var ls = _context.RegistryManifests.AsNoTracking().ToList()
+                .Where(x => x.CanBeSentNewOnly)
+                .ToList();
+                
+            return Task.FromResult(ls);
+        }
+
+        public Task<List<RegistryManifest>> GetFailedForSending(int[] siteCode = null)
+        {
+            if (null != siteCode)
+            {
+                var list = _context.RegistryManifests.Include(x=>x.TransmissionLogs).AsNoTracking().ToList()
+                    .Where(x => x.CanBeSentFailed && siteCode.Contains(x.SiteCode))
+                    .ToList();
+                return Task.FromResult(list);
+            }
+
+            var ls = _context.RegistryManifests.Include(x=>x.TransmissionLogs).AsNoTracking().ToList()
+                .Where(x => x.CanBeSentFailed)
+                .ToList();
+                
+            return Task.FromResult(ls);
+        }
+
         private Task<List<RegistryManifest>> GetNewReadyForSending(int [] siteCode=null)
         {
     

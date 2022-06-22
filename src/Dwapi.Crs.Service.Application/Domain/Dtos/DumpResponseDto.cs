@@ -11,6 +11,7 @@ namespace Dwapi.Crs.Service.Application.Domain.Dtos
         public List<string> marital_status { get; set; }
         public List<string> ccc_no { get; set; }
         public List<string> sex { get; set; }
+        public List<string> date_of_hiv_diagnosis { get; set; }
 
         private string GenerateMarital()
         {
@@ -24,9 +25,9 @@ namespace Dwapi.Crs.Service.Application.Domain.Dtos
 
         private string GenerateCcc()
         {
-            if (marital_status.Any())
+            if (ccc_no.Any())
             {
-                var res = marital_status.Distinct().ToList();
+                var res = ccc_no.Distinct().ToList();
                 return string.Join(',', res);
             }
 
@@ -35,9 +36,9 @@ namespace Dwapi.Crs.Service.Application.Domain.Dtos
 
         private string GenerateSex()
         {
-            if (marital_status.Any())
+            if (sex.Any())
             {
-                var res = marital_status.Distinct().ToList();
+                var res = sex.Distinct().ToList();
                 return  string.Join(',', res);
             }
 
@@ -46,7 +47,7 @@ namespace Dwapi.Crs.Service.Application.Domain.Dtos
 
         public override string ToString()
         {
-            return $"{SexSummary},{MaritalStatusSummary},{CccNoSummary}";
+            return $"{SexSummary},{MaritalStatusSummary},{CccNoSummary}".Trim();
         }
     }
 }

@@ -27,11 +27,26 @@ namespace Dwapi.Crs.SharedKernel.Tests.TestData.Utils
         [TestCase("Marital","Unknown","Unknown")]
         [TestCase("Name"," ","Unknown")]
         [TestCase("Name",null,"Unknown")]
+        [TestCase("Name","","Unknown")]
+        [TestCase("Name","Jina","Jina")]
+        [TestCase("Sex"," ","Male")]
+        [TestCase("Sex",null,"Male")]
+        [TestCase("Sex","Female","Female")]
         public void should_Transform(string cat, string val,string tVal)
         {
             var tf = val.Transfrom(cat);
            Assert.AreEqual(tVal,tf);
            Console.WriteLine($"After:{tf}");
+        }
+        
+        [TestCase("1","1")]
+        [TestCase("1=8","")]
+        [TestCase(" 18 ","18")]
+        public void should_Get_Numeric(string val,string tVal)
+        {
+            var tf = val.ToNumericFormat();
+            Assert.AreEqual(tVal,tf);
+            Console.WriteLine($"After:{tf}");
         }
     }
 }

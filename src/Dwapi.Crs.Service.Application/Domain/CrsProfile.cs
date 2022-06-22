@@ -1,11 +1,12 @@
 using AutoMapper;
 using Dwapi.Crs.Core.Domain;
+using Dwapi.Crs.Service.Application.Domain.Converters;
 using Dwapi.Crs.Service.Application.Domain.Dtos;
 using Dwapi.Crs.SharedKernel.Utils;
 
 namespace Dwapi.Crs.Service.Application.Domain
 {
-    public class CrsProfile:Profile
+    public class CrsProfile : Profile
     {
         public CrsProfile()
         {
@@ -26,40 +27,40 @@ namespace Dwapi.Crs.Service.Application.Domain
                     src.DrivingLicenseNumber))
                 .ForMember(dest => dest.patient_clinic_no, opt => opt.MapFrom(src =>
                     src.PatientClinicNumber))
-                .ForMember(dest => dest.first_name, opt => opt.MapFrom(src =>
-                    src.FirstName.ToLower()))
+                .ForMember(dest => dest.first_name, opt => opt.ConvertUsing(new NameConverter(), src =>
+                    src.FirstName))
                 .ForMember(dest => dest.middle_name, opt => opt.MapFrom(src =>
                     src.MiddleName.ToUpper()))
-                .ForMember(dest => dest.last_name, opt => opt.MapFrom(src =>
-                    src.LastName.Transfrom("Name").ToUpper()))
-                .ForMember(dest => dest.date_of_birth, opt => opt.MapFrom(src =>
-                    src.DateOfBirth.ToDateFormat()))
-                .ForMember(dest => dest.sex, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.last_name, opt => opt.ConvertUsing(new NameConverter(), src =>
+                    src.LastName))
+                .ForMember(dest => dest.date_of_birth, opt => opt.ConvertUsing(new DateConverter(), src =>
+                    src.DateOfBirth))
+                .ForMember(dest => dest.sex, opt => opt.ConvertUsing(new SexConverter(), src =>
                     src.Sex))
-                .ForMember(dest => dest.marital_status, opt => opt.MapFrom(src =>
-                    src.MaritalStatus.Transfrom("Marital")))
+                .ForMember(dest => dest.marital_status, opt => opt.ConvertUsing(new MaritalConverter(), src =>
+                    src.MaritalStatus))
                 .ForMember(dest => dest.occupation, opt => opt.MapFrom(src =>
                     src.Occupation))
                 .ForMember(dest => dest.education_level, opt => opt.MapFrom(src =>
                     src.HighestLevelOfEducation))
-                .ForMember(dest => dest.phone_number, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.phone_number, opt => opt.ConvertUsing(new PhoneConverter(), src =>
                     src.PhoneNumber))
-                .ForMember(dest => dest.alt_phone_number, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.alt_phone_number, opt => opt.ConvertUsing(new PhoneConverter(), src =>
                     src.AlternativePhoneNumber))
-                .ForMember(dest => dest.spouse_phone_number, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.spouse_phone_number, opt => opt.ConvertUsing(new PhoneConverter(), src =>
                     src.SpousePhoneNumber))
                 .ForMember(dest => dest.next_of_kin_name, opt => opt.MapFrom(src =>
-                    src.NameOfNextOfKin.ToUpper()))
+                    src.NameOfNextOfKin.Truncate(59).ToUpper()))
                 .ForMember(dest => dest.next_of_kin_relationship, opt => opt.MapFrom(src =>
                     src.NextOfKinRelationship.ToUpper()))
-                .ForMember(dest => dest.next_of_kin_phone_number, opt => opt.MapFrom(src =>
+                .ForMember(dest => dest.next_of_kin_phone_number, opt => opt.ConvertUsing(new PhoneConverter(), src =>
                     src.NextOfKinTelNo))
                 .ForMember(dest => dest.county, opt => opt.MapFrom(src =>
-                    src.County))
+                    src.County.Truncate(59)))
                 .ForMember(dest => dest.subcounty, opt => opt.MapFrom(src =>
-                    src.SubCounty))
+                    src.SubCounty.Truncate(59)))
                 .ForMember(dest => dest.ward, opt => opt.MapFrom(src =>
-                    src.Ward))
+                    src.Ward.Truncate(59)))
                 .ForMember(dest => dest.location, opt => opt.MapFrom(src =>
                     src.Location.Truncate(59)))
                 .ForMember(dest => dest.village, opt => opt.MapFrom(src =>
@@ -67,27 +68,27 @@ namespace Dwapi.Crs.Service.Application.Domain
                 .ForMember(dest => dest.landmark, opt => opt.MapFrom(src =>
                     src.Landmark.Truncate(59)))
                 .ForMember(dest => dest.facility_name, opt => opt.MapFrom(src =>
-                    src.FacilityName))
+                    src.FacilityName.Truncate(59)))
                 .ForMember(dest => dest.facility_mfl, opt => opt.MapFrom(src =>
                     src.MFLCode))
-                .ForMember(dest => dest.date_of_initiation, opt => opt.MapFrom(src =>
-                    src.DateOfInitiation.ToDateFormat()))
+                .ForMember(dest => dest.date_of_initiation, opt => opt.ConvertUsing(new DateConverter(), src =>
+                    src.DateOfInitiation))
                 .ForMember(dest => dest.treatment_outcome, opt => opt.MapFrom(src =>
                     src.TreatmentOutcome))
-                .ForMember(dest => dest.date_of_last_encounter, opt => opt.MapFrom(src =>
-                    src.DateOfLastEncounter.ToDateFormat()))
-                .ForMember(dest => dest.date_of_last_viral_load, opt => opt.MapFrom(src =>
-                    src.DateOfLastViralLoad.ToDateFormat()))
-                .ForMember(dest => dest.date_of_next_appointment, opt => opt.MapFrom(src =>
-                    src.NextAppointmentDate.ToDateFormat()))
+                .ForMember(dest => dest.date_of_last_encounter, opt => opt.ConvertUsing(new DateConverter(), src =>
+                    src.DateOfLastEncounter))
+                .ForMember(dest => dest.date_of_last_viral_load, opt => opt.ConvertUsing(new DateConverter(), src =>
+                    src.DateOfLastViralLoad))
+                .ForMember(dest => dest.date_of_next_appointment, opt => opt.ConvertUsing(new DateConverter(), src =>
+                    src.NextAppointmentDate))
                 .ForMember(dest => dest.last_regimen, opt => opt.MapFrom(src =>
                     src.LastRegimen))
                 .ForMember(dest => dest.last_regimen_line, opt => opt.MapFrom(src =>
                     src.LastRegimenLine))
                 .ForMember(dest => dest.current_on_art, opt => opt.MapFrom(src =>
                     src.CurrentOnART.ToUpper()))
-                .ForMember(dest => dest.date_of_hiv_diagnosis, opt => opt.MapFrom(src =>
-                    src.DateOfHIVDiagnosis.ToDateFormat()))
+                .ForMember(dest => dest.date_of_hiv_diagnosis, opt => opt.ConvertUsing(new DateConverter(), src =>
+                    src.DateOfHIVDiagnosis))
                 .ForMember(dest => dest.last_viral_load_result, opt => opt.MapFrom(src =>
                     src.LastViralLoadResult));
 

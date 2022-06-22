@@ -17,13 +17,13 @@ namespace Dwapi.Crs.Service.Application.Tests.Commands
             _mediator = TestInitializer.ServiceProvider.GetService<IMediator>();
         }
         
-        [Test]
-        public void should_Dump_Client()
+        [TestCase(11259)]
+        public void should_Dump_Client(int site)
         {
             var ress = _mediator.Send(new GenerateDump()).Result;
             Assert.True(ress.IsSuccess);
             
-            var res = _mediator.Send(new DumpClientsBySite(new []{12602})).Result;
+            var res = _mediator.Send(new DumpClientsBySite(new []{site})).Result;
             Assert.True(res.IsSuccess);
         }
     }
