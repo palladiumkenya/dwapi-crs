@@ -21,7 +21,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         {
             _mediator = mediator;
         }
-        [Authorize(Roles = "UpiManager")]
+        [Authorize]
         [HttpPost("Generate")]
         public async Task<IActionResult> Generate()
         { 
@@ -36,7 +36,7 @@ namespace Dwapi.Crs.Service.App.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-        [Authorize(Roles = "UpiManager")]
+        [Authorize]
         [HttpPost("DumpAll")]
         public async Task<IActionResult> Dump()
         {
@@ -55,7 +55,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
 
         
-        [Authorize(Roles = "UpiManager")]
+        [Authorize]
         [HttpPost("DumpSite")]
         public async Task<IActionResult> DumpSingle([FromBody] SiteDto siteDto)
         {
@@ -71,7 +71,7 @@ namespace Dwapi.Crs.Service.App.Controllers
             }
         }
         
-        [Authorize(Roles = "UpiManager")]
+        [Authorize]
         [HttpPost("ForceDumpAll")]
         public async Task<IActionResult> ForceDump()
         {
@@ -90,7 +90,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
 
         
-        [Authorize(Roles = "UpiManager")]
+        [Authorize]
         [HttpPost("ForceDumpSite")]
         public async Task<IActionResult> ForceDumpSingle([FromBody] SiteDto siteDto)
         {
@@ -107,7 +107,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
         
         
-        [Authorize(Roles = "UpiManager")]
+        [Authorize]
         [HttpPost("DumpFailed")]
         public async Task<IActionResult> DumpFailed()
         {
@@ -126,7 +126,7 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
 
         
-        [Authorize(Roles = "UpiManager")]
+        [Authorize]
         [HttpPost("DumpFailedSite")]
         public async Task<IActionResult> DumpFailedSite([FromBody] SiteDto siteDto)
         {
@@ -142,12 +142,12 @@ namespace Dwapi.Crs.Service.App.Controllers
             }
         }
 
-
         [HttpGet("Status")]
         public IActionResult GetStatus()
         {
             try
             {
+                var user = HttpContext.User;
                 var ver = GetType().Assembly.GetName().Version;
                 return Ok(new
                 {
