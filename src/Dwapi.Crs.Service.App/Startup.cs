@@ -91,6 +91,7 @@ namespace Dwapi.Crs.Service.App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IServiceProvider serviceProvider)
         {
+            var showPii = Configuration.GetValue<bool>("ShowPII");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -98,6 +99,7 @@ namespace Dwapi.Crs.Service.App
             }
             else
             {
+                IdentityModelEventSource.ShowPII = showPii; 
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
