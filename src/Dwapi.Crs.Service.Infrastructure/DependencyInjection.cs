@@ -3,6 +3,7 @@ using Dwapi.Crs.Service.Application.Domain;
 using Dwapi.Crs.Service.Application.Interfaces;
 using Dwapi.Crs.Service.Infrastructure.Repositories;
 using Dwapi.Crs.Service.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,8 @@ namespace Dwapi.Crs.Service.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var useAuth0 = configuration.GetValue<string>("AuthProvider") == "Auth0Settings";
+            
             var authSettings = new AuthSettings(
                 configuration.GetValue<string>($"{nameof(AuthSettings)}:{nameof(AuthSettings.Authority)}"),
                 configuration.GetValue<string>($"{nameof(AuthSettings)}:{nameof(AuthSettings.Origins)}"),
@@ -34,21 +37,44 @@ namespace Dwapi.Crs.Service.Infrastructure
                 configuration.GetValue<string>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Secret)}"),
                 configuration.GetValue<int>($"{nameof(CrsSettings)}:{nameof(CrsSettings.Batches)}")
             );
+            
+            var auth0Settings = new Auth0Settings(
+                configuration.GetValue<string>($"{nameof(Auth0Settings)}:{nameof(Auth0Settings.Authority)}"),
+                configuration.GetValue<string>($"{nameof(Auth0Settings)}:{nameof(Auth0Settings.Origins)}"),
+                configuration.GetValue<string>($"{nameof(Auth0Settings)}:{nameof(Auth0Settings.Audience)}"),
+                configuration.GetValue<string>($"{nameof(Auth0Settings)}:{nameof(Auth0Settings.Client)}"),
+                configuration.GetValue<string>($"{nameof(Auth0Settings)}:{nameof(Auth0Settings.Secret)}")
+            );
 
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
+            if (useAuth0)
+            {
+                services.AddAuthentication(options =>
                 {
-                    options.Authority = authSettings.Authority;
-                    options.RequireHttpsMetadata = false;
-         
-                    // options.Audience = "crsserviceapi";
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = false,ValidateIssuer=false
-                        
-                        
-                    };
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }).AddJwtBearer(options =>
+                {
+                    options.Authority = auth0Settings.Authority;
+                    options.Audience = auth0Settings.Audience;
                 });
+            }
+            else
+            {
+
+                services.AddAuthentication("Bearer")
+                    .AddJwtBearer("Bearer", options =>
+                    {
+                        options.Authority = authSettings.Authority;
+                        options.RequireHttpsMetadata = false;
+
+                        // options.Audience = "crsserviceapi";
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateAudience = false, ValidateIssuer = false
+
+
+                        };
+                    });
                 // .AddOpenIdConnect("oidc", opt =>
                 // {
                 //     opt.SignInScheme = "Cookies";
@@ -58,8 +84,9 @@ namespace Dwapi.Crs.Service.Infrastructure
                 //     opt.SaveTokens = true;
                 //     opt.ClientSecret = authSettings.Secret;
                 // });
-                
-            
+
+            }
+
             var options = new RestClientOptions(crsSettings.Url)
             {
                 FollowRedirects = false
