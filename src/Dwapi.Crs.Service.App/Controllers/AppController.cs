@@ -274,7 +274,6 @@ namespace Dwapi.Crs.Service.App.Controllers
         }
         
          
-        [Authorize(Roles = "UpiManager")]
         [HttpPost("DeDuplicateSite")]
         public async Task<IActionResult> DeDuplicateSite([FromBody] SiteDto site)
         {
